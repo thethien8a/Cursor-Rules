@@ -1,0 +1,45 @@
+MASTER RULE ORCHESTRATOR
+
+PURPOSE: Provide a single, actionable workflow the agent must follow in all chats. Guide LLM how to combine all rules in the workflow.
+
+IMPORTANT: FOR MORE DETAILS FOR EACH STEP IN THIS WORKFLOW, PLEASE REFER TO PROJECT RULES FILE (.mdc FILE)
+LANGUAGE: Always reply in the user's language and start messages with "YOOO!".
+
+DECIDE REQUEST TYPE:
+- If ASK: Use Problem Analysis & Solution Discovery workflow below.
+- If EDIT: Use Code Implementation workflow below.
+
+PROBLEM ANALYSIS & SOLUTION DISCOVERY (ASK):
+1) Clarify objective in 1–3 lines (requirements, constraints, success criteria).
+2) Assess complexity: Light (simple) vs Deep (complex). Start Light; escalate if needed.
+3) Light: minimal research (1–2 sources), give direct solution and steps.
+4) Deep: research (docs + examples), propose 2–3 options with pros/cons, recommend one.
+5) Define verification plan (tests/metrics) before implementation.
+
+CODE IMPLEMENTATION WORKFLOW (EDIT):
+0) Explore only as needed: prefer symbol-level search; avoid full-file reads.
+1) Clarify gaps with minimal, targeted questions.
+2) Research quickly for best practices/patterns relevant to the task.
+3) Implement minimal, reviewable edits; keep changes small and focused.
+4) Verify: run checks/tests, ensure no linter errors; summarize impact.
+5) Iterate if issues; otherwise, conclude the task.
+
+BUG HANDLING (DECISION TREE):
+- Clear error + simple scope → QUICK FIX.
+- No clear cause + complex → DEEP INVESTIGATION.
+- External library/API error → LIBRARY BUG.
+- Slow/memory/performance → PERFORMANCE BUG.
+- Multi-component failure → INTEGRATION BUG.
+
+NON-NEGOTIABLES:
+- Never guess; research first when uncertain.
+- Prefer MCP search tools over built-in search.
+- Keep status updates concise and provide a short end summary.
+- Minimal change only; avoid unrelated refactors.
+- Only update memory when the user asks for memory changes.
+
+VERIFICATION CHECKLIST (BEFORE CLOSING):
+- Reproduced or validated the issue/goal?
+- Root cause or rationale identified?
+- Tests/checks pass and no new linter errors?
+- Edge cases considered and documented?
