@@ -1,45 +1,15 @@
-MASTER RULE ORCHESTRATOR
+MASTER HOW TO USE ALL PROJECT RULES:
 
-PURPOSE: Provide a single, actionable workflow the agent must follow in all chats. Guide LLM how to combine all rules in the workflow.
+1. Notes
+- NOTE 1: When bug appeared, must follow "Bug Handling Workflow Rules" to fix the bug
+- NOTE 2: "Memory Management Rule" only apply when user ask you to update memory or do something related to memory.
+- NOTE 3: Only talking to user "I don't know ..." after you deep searching anything on the internet refer to problem/questions user ask but still not found the results for the problem/questions
+- NOTE 4: User prefer using mcp search tools than built in search tools of Cursor
 
-IMPORTANT: FOR MORE DETAILS FOR EACH STEP IN THIS WORKFLOW, PLEASE REFER TO PROJECT RULES FILE (.mdc FILE)
-LANGUAGE: Always reply in the user's language and start messages with "YOOO!".
-
-DECIDE REQUEST TYPE:
-- If ASK: Use Problem Analysis & Solution Discovery workflow below.
-- If EDIT: Use Code Implementation workflow below.
-
-PROBLEM ANALYSIS & SOLUTION DISCOVERY (ASK):
-1) Clarify objective in 1–3 lines (requirements, constraints, success criteria).
-2) Assess complexity: Light (simple) vs Deep (complex). Start Light; escalate if needed.
-3) Light: minimal research (1–2 sources), give direct solution and steps.
-4) Deep: research (docs + examples), propose 2–3 options with pros/cons, recommend one.
-5) Define verification plan (tests/metrics) before implementation.
-
-CODE IMPLEMENTATION WORKFLOW (EDIT):
-0) Explore only as needed: prefer symbol-level search; avoid full-file reads.
-1) Clarify gaps with minimal, targeted questions.
-2) Research quickly for best practices/patterns relevant to the task.
-3) Implement minimal, reviewable edits; keep changes small and focused.
-4) Verify: run checks/tests, ensure no linter errors; summarize impact.
-5) Iterate if issues; otherwise, conclude the task.
-
-BUG HANDLING (DECISION TREE):
-- Clear error + simple scope → QUICK FIX.
-- No clear cause + complex → DEEP INVESTIGATION.
-- External library/API error → LIBRARY BUG.
-- Slow/memory/performance → PERFORMANCE BUG.
-- Multi-component failure → INTEGRATION BUG.
-
-NON-NEGOTIABLES:
-- Never guess; research first when uncertain.
-- Prefer MCP search tools over built-in search.
-- Keep status updates concise and provide a short end summary.
-- Minimal change only; avoid unrelated refactors.
-- Only update memory when the user asks for memory changes.
-
-VERIFICATION CHECKLIST (BEFORE CLOSING):
-- Reproduced or validated the issue/goal?
-- Root cause or rationale identified?
-- Tests/checks pass and no new linter errors?
-- Edge cases considered and documented?
+2. Workflow
+- Step 0 (Mandatory): Check whether user's request is "ASK" or "WANT YOU TO EDIT". If user just ask you, you follow rules "Problem Analysis & Solution Discovery Rule" to analyze the problem and provide a solution to the user. If user want you to edit code, follow all the steps bellow.
+- Step 1 (Optional): Explore codebase (if you don't have information about the codebase, you must explore the codebase first) (Follow rules "Codebase Exploration Rules")
+- Step 2 (Optional): Clarify user's request by asking questions to the user to understand the problem better. PLEASE JUST STOP ASKING WHEN YOU THINK YOU HAVE UNDERSTOOD THE PROBLEM ENOUGH.
+- Step 3 (Mandatory): After user confirms you to start coding, you must use 'exa mcp' or any code search mcp tools to QUICKLY search for the relevant code information for the problems you are trying to solve first (The purpose is to get best practices  code from others developers for this task, code examples for reference, etc)
+- Step 4 (Mandatory): Follow rules "Using Tools Rule" to explore code and edit code
+- Step 5 (Optional): After coding is done, guide user to test code and ask user whether everything is working well. If not, go back to step 4 and find problems and fix problems.
