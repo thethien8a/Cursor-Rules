@@ -4,338 +4,377 @@ alwaysApply: true
 ---
 # Bug Handling Workflow Rules
 
-**PURPOSE:** Systematic protocol for detecting, analyzing, and resolving ANY code bug.
+**PURPOSE:** Systematic methodology for identifying, analyzing, and resolving bugs efficiently.
 
-**CORE PRINCIPLE:** Never guess. Research → Understand → Fix → Verify.
+**WHEN TO APPLY:** Errors, warnings, unexpected behavior, test failures, or any code malfunction.
 
----
-
-## 🎯 QUICK START: Bug Type Decision Tree
-
-```
-Bug detected → What type?
-├─ Clear error + simple scope → APPROACH 1: QUICK FIX ⚡ (5-10 min)
-├─ No clear cause + complex → APPROACH 2: DEEP INVESTIGATION 🔬 (30-60 min)
-├─ External library/API error → APPROACH 3: LIBRARY BUG 📚 (15-30 min)
-├─ Slow/memory leak/performance → APPROACH 4: PERFORMANCE BUG 🚀 (20-45 min)
-└─ Multiple components failing → APPROACH 5: INTEGRATION BUG 🔗 (25-50 min)
-```
+**CORE PRINCIPLE:** Root Cause Analysis (RCA) - Solve problems at their source, not symptoms. Never guess; research, analyze, verify.
 
 ---
 
-## 📋 THE 6-PHASE WORKFLOW
+## 🎯 QUICK DECISION TREE
 
-Every bug fix follows: **DETECT → ISOLATE → ANALYZE → RESEARCH → FIX → VERIFY**
-
-| Phase | Primary Tools | When to Use |
-|-----|-----|-----|
-| **DETECT** | `read_lints`, logs, stack traces | After code changes |
-| **ISOLATE** | `find_symbol`, `get_symbols_overview`, `search_for_pattern` | Locate exact code |
-| **ANALYZE** | `sequential-thinking mcp`, `find_referencing_symbols`, `read_file` (ranges) | Root cause analysis |
-| **RESEARCH** | `exa_get_code_context`, `context7`, `brave_web_search`, `octocode` | Find solutions |
-| **FIX** | Cursor Editor (NOT Serena) | Minimal change only |
-| **VERIFY** | Terminal tests, `read_lints` | Confirm fix works |
+```
+Bug Detected → Can reproduce? → NO → Gather info (logs, conditions)
+             ↓ YES
+Error message clear? → YES → Phase 2 (Locate)
+             ↓ NO
+Intermittent/flaky? → YES → Add logging, monitor
+             ↓ NO
+Follow 4-Phase Workflow ↓
+```
 
 ---
 
-## 🚀 APPROACH 1: QUICK FIX (Simple Bugs)
+## 📋 THE 4-PHASE WORKFLOW
 
-**USE WHEN:** ✅ Clear error + single file + common pattern + known library
+### PHASE 1: REPRODUCE & UNDERSTAND
 
-**TOOL SEQUENCE:**
-```
-1. read_lints() OR terminal output → Get error
-2. read_file(path, startLine, endLine) → 10 lines context
-3. exa_get_code_context("library_name error_pattern", 2000) → Quick solution
-4. IF API issue: context7_resolve-library-id → get-library-docs(topic="error_topic")
-5. Fix in Cursor → Minimal change
-6. Terminal: Run tests + read_lints()
-```
+**Goal:** Confirm bug exists and understand scope
 
-**EXAMPLE:** `TypeError: 'NoneType'` → exa_get_code_context("python check None before iteration") → Add `if result:` check → Test passes ✅
+**Steps:**
+1. **Reproduce Consistently** (≥3 times with same steps)
+   - Document exact trigger steps
+   - Note conditions: OS, browser, inputs, environment, timing
+   - Try different environments (dev/staging/prod)
 
----
+2. **Gather Evidence**
+   - Error messages (full stack traces)
+   - Logs (application + system)
+   - Recent changes (git log, recent commits)
+   - Environment details (versions, dependencies)
 
-## 🔬 APPROACH 2: DEEP INVESTIGATION (Complex Bugs)
+3. **Define Bug Characteristics**
+   - Severity: Critical/High/Medium/Low
+   - Scope: Single function/Module/System-wide
+   - Type: Syntax/Logic/Runtime/Integration/Performance
+   - Frequency: Always/Intermittent/Edge case
 
-**USE WHEN:** ⚠️ No clear error / Multiple files / Can't reproduce / Architectural issue
-
-**TOOL SEQUENCE (Use PARALLEL where possible):**
-```
-1. sequential-thinking: "What are all possible causes?"
-2. PARALLEL: get_symbols_overview(file) + find_symbol(symbol, include_body=False)
-3. find_referencing_symbols(symbol, path) → Trace call chain
-4. sequential-thinking: "Based on call chain, where's the bug?"
-5. read_file(file, start, end) → Read suspicious sections only
-6. PARALLEL RESEARCH:
-   - brave_web_search("<tech> <symptom> debugging")
-   - octocode_githubSearchCode([{keywordsToSearch: ["bug_pattern"], stars: ">500"}])
-7. sequential-thinking: "What's the root cause?"
-8. IF similar issue found: octocode_githubGetFileContent(matchString="fix")
-9. Fix in Cursor → Implement with tests
-10. Comprehensive test suite
-```
-
-**EXAMPLE:** Data corruption → sequential-thinking (race condition?) → find_referencing_symbols → Discover async calls without locks → Research async patterns → Fix: Add asyncio.Lock → Test concurrent requests ✅
+**Tools:** Cursor Diagnostics, Terminal, Git history
 
 ---
 
-## 📚 APPROACH 3: LIBRARY BUG (External Dependencies)
+### PHASE 2: LOCATE ROOT CAUSE
 
-**USE WHEN:** 📦 Error from library / API behavior changed / Version incompatibility / Unclear docs
+**Goal:** Pinpoint exact code location causing bug
 
-**TOOL SEQUENCE (CRITICAL - PARALLEL RESEARCH):**
-```
-1. Extract from error: library name, function, error message
-2. find_symbol(your_function_calling_library, include_body=True)
-3. PARALLEL RESEARCH:
-   - exa_get_code_context("<library> <function> usage", 3000)
-   - context7_resolve-library-id("<library>") → Note ID
-   - brave_web_search("<library> <error>")
-   - octocode_githubSearchCode([{keywordsToSearch: ["lib", "func"], stars: ">1000"}])
-4. context7_get-library-docs("/org/lib", topic="<function>") → Official spec
-5. COMPARE: Your usage vs examples vs official docs
-6. sequential-thinking: "What's different in my usage?"
-7. Fix: Align with correct pattern
-8. Test: Include example from docs
-```
+#### A. Start with Error Message/Stack Trace
 
-**EXAMPLE:** `requests.ConnectionError` → find_symbol shows timeout=None → PARALLEL research → context7 docs show timeout required → Fix: timeout=30 → Works ✅
-
----
-
-## 🚀 APPROACH 4: PERFORMANCE BUG
-
-**USE WHEN:** 🐌 Too slow / 💾 Memory leak / 📈 High CPU / ⏱️ Timeout
-
-**TOOL SEQUENCE:**
-```
-1. Profile: python -m cProfile / node --prof
-2. Identify hot path (slow function)
-3. find_symbol(slow_function, include_body=True)
-4. search_for_pattern(r"for.*in.*:", path=file) → Find loops
-5. sequential-thinking: "O(n²)? Redundant calls? Missing cache?"
-6. find_referencing_symbols(slow_function) → How often called?
-7. PARALLEL RESEARCH:
-   - exa_get_code_context("<lang> optimize <algorithm>", 4000)
-   - octocode_githubSearchCode([{keywordsToSearch: ["performance", "optimize"], stars: ">1000"}])
-   - brave_web_search("<lang> <operation> performance")
-8. IF found pattern: octocode_githubGetFileContent → Study implementation
-9. Fix: Optimize (cache, better algorithm, batching)
-10. Profile again → Compare metrics
-```
-
-**EXAMPLE:** API 5s → Profile shows N+1 query → find_symbol sees loop queries → exa: "sqlalchemy N+1" → Fix: joinedload → 0.2s (25x faster) ✅
-
----
-
-## 🔗 APPROACH 5: INTEGRATION BUG
-
-**USE WHEN:** 🔌 Multi-service failure / Works alone, fails integrated / API mismatch / Data flow issue
-
-**TOOL SEQUENCE:**
-```
-1. Document: "Component A sends X, Component B expects Y"
-2. sequential-thinking: "Map data flow: A → ? → B"
-3. PARALLEL: get_symbols_overview(component_a) + get_symbols_overview(component_b)
-4. find_symbol(api_endpoint, include_body=True) → BOTH components
-5. search_for_pattern(r"api.*call|event.*emit") → Find integration points
-6. Compare: What A sends vs B expects
-7. PARALLEL RESEARCH:
-   - exa_get_code_context("<framework> API validation")
-   - octocode_githubSearchCode([{keywordsToSearch: ["api", "integration", "contract"]}])
-8. IF API library: context7_get-library-docs for schema
-9. sequential-thinking: "Data transformation missing?"
-10. Fix: Add validation/transformation layer
-11. End-to-end integration test
-```
-
-**EXAMPLE:** Frontend date → Backend fails → find_symbol both sides → Frontend sends ISO string, backend expects Unix timestamp → exa: "js date to unix" → Fix: date.getTime()/1000 → Test passes ✅
-
----
-
-## 🎯 DECISION MATRIX: Symptom → Approach
-
-| Symptom | Approach | First Tool | Why |
-|-----|-----|-----|-----|
-| Clear error + known library | QUICK FIX | `exa_get_code_context` | Fast solution |
-| Silent failure / wrong output | DEEP INVESTIGATION | `sequential-thinking` | Need RCA |
-| Library AttributeError | LIBRARY BUG | `context7_get-library-docs` | Check API |
-| Slow / timeout | PERFORMANCE | Profile first | Measure bottleneck |
-| Works alone, fails together | INTEGRATION | `sequential-thinking` | Map data flow |
-| Dependency stack trace | LIBRARY BUG | `exa_get_code_context` | Usage examples |
-| Memory leak | PERFORMANCE | `search_for_pattern` | Find leaks |
-| API 400/500 error | INTEGRATION | `find_symbol` both ends | Contract mismatch |
-
----
-
-## ⚡ TOOL USAGE BEST PRACTICES
-
-### Serena MCP - Targeted Code Analysis
 ```python
-# ❌ WRONG: Read entire file
-read_file("large_file.py")  # 1000 lines!
+# Example: "AttributeError: 'NoneType' object has no attribute 'process'"
 
-# ✅ RIGHT: Targeted approach
-get_symbols_overview("large_file.py")  # Structure
-find_symbol("Class/method", include_body=True)  # Only needed code
+# Get overview
+mcp_serena_get_symbols_overview("path/to/error_file.py")
+
+# Find problematic symbol
+mcp_serena_find_symbol(
+    name_path="ClassName/method_name",
+    relative_path="path/to/error_file.py",
+    include_body=True
+)
+
+# Check callers (trace data flow)
+mcp_serena_find_referencing_symbols(
+    name_path="ClassName/method_name",
+    relative_path="path/to/error_file.py"
+)
 ```
 
-### Research - Parallel Execution
+#### B. If Error Location Unknown
+
 ```python
-# ✅ RIGHT: Make multiple research calls in same tool_calls block for speed
-# Combine: exa + context7 + brave + octocode simultaneously
+# Search for error patterns
+mcp_serena_search_for_pattern(
+    substring_pattern=r"def process.*:",
+    relative_path="src/",
+    paths_include_glob="*.py",
+    context_lines_before=3,
+    context_lines_after=3
+)
+
+# Or use Cursor Search for exact strings
 ```
 
-### Sequential Thinking - When to Use
+#### C. Isolate Problem (Binary Search)
+1. Comment out half of suspicious code
+2. Run test/reproduce bug
+3. If bug persists → problem in active half
+4. If bug disappears → problem in commented half
+5. Repeat until exact lines found
+
+**Tools:** Serena MCP (`find_symbol`, `find_referencing_symbols`, `search_for_pattern`), Cursor Debugger
+
+---
+
+### PHASE 3: RESEARCH SOLUTIONS
+
+**Goal:** Find how others solved similar issues
+
+#### A. Parallel Research (run in same batch)
+
 ```python
-# ✅ USE FOR: Root cause analysis, data flow mapping, complex decisions
-# ❌ DON'T USE FOR: Simple bugs (overkill), obvious causes
+# 1. General web search
+mcp_brave-search_brave_web_search(
+    query="[exact error] [language] [framework]",
+    count=10
+)
+
+# 2. Code examples
+mcp_exa_get_code_context_exa(
+    query="how to fix [error type] in [framework]",
+    tokensNum=3000
+)
+
+# 3. GitHub search
+mcp_octocode_githubSearchCode(
+    queries=[{
+        "keywordsToSearch": ["error_keyword", "fix"],
+        "match": "file",
+        "limit": 5
+    }]
+)
+
+# 4. Official docs
+mcp_context7_resolve-library-id(libraryName="library-name")
+mcp_context7_get-library-docs(
+    context7CompatibleLibraryID="/org/project",
+    topic="error handling"
+)
 ```
 
-### Octocode - Quality Filters
+**Research Checklist:**
+- [ ] Stack Overflow for exact error
+- [ ] GitHub Issues in relevant repos
+- [ ] Official documentation
+- [ ] Blog posts/tutorials
+
+#### B. For Complex Bugs
+
 ```python
-# ✅ RIGHT: Specific + quality filter
-githubSearchCode([{
-  keywordsToSearch: ["specific_func", "fix"],  # ≤3 keywords
-  stars: ">1000",  # Quality repos
-  limit: 5
-}])
+# Extract full content from promising URLs
+mcp_Bright_Data_scrape_batch(urls=["url1", "url2"])  # Max 10
+```
 
-# ❌ WRONG: Too generic
-keywordsToSearch: ["error", "fix", "bug", "issue"]  # Too vague
+#### C. Evaluate Solutions
+
+**Criteria:** Relevance, Recency, Authority, Completeness, Verification
+
+**Document:**
+```
+SOLUTION CANDIDATES:
+1. From [Source]:
+   - Approach: [Description]
+   - Why it works: [Root cause]
+   - Confidence: High/Medium/Low
+```
+
+#### D. If No Existing Solution
+
+1. Read official docs thoroughly (API refs, error guides, FAQs)
+2. Analyze library source code (use Octocode)
+3. Understand expected vs actual behavior
+4. Form hypotheses (use `sequential-thinking mcp`)
+5. Test each hypothesis systematically
+
+---
+
+### PHASE 4: IMPLEMENT & TEST FIX
+
+**Goal:** Apply solution without introducing new bugs
+
+#### A. Pre-Implementation
+
+```python
+# Check impact first
+mcp_serena_think_about_task_adherence()
+mcp_serena_find_referencing_symbols(name, path)  # See all callers
+```
+
+**Checklist:**
+- [ ] Understand root cause (not symptoms)
+- [ ] Clear solution approach
+- [ ] Know which files/functions to modify
+- [ ] Identified all affected code paths
+- [ ] Backed up state (`git stash` or commit)
+
+#### B. Implementation Best Practices
+
+1. **Minimal Changes** - Only what's necessary, one bug = one fix
+
+2. **Add Defensive Code**
+```python
+# Add null checks, validation, better error messages
+if data is None:
+    logger.error("Data is None in process_data()")
+    raise ValueError("Expected data, got None")
+```
+
+3. **Add Comments** - Explain WHY (root cause + solution), not WHAT
+
+4. **Follow Code Style** - Match project conventions
+
+#### C. Testing Levels
+
+```bash
+# 1. Unit test
+pytest tests/test_module.py::test_case -v
+
+# 2. Reproduce original bug (should not occur)
+
+# 3. Regression test
+pytest tests/ -v
+
+# 4. Check linter
+read_lints(["path/to/file.py"])
+
+# 5. Manual testing (happy path + edge cases)
 ```
 
 ---
 
-## 🚫 COMMON PITFALLS
+## 🛠️ TOOL DECISION MATRIX
 
-| ❌ DON'T | ✅ DO |
-|-----|-----|
-| Guess without research | Use MCP tools ALWAYS |
-| Read entire files | `get_symbols_overview` → `find_symbol` → targeted read |
-| Fix symptoms only | `sequential-thinking` for root cause |
-| Ignore official docs | Check `context7` for library bugs |
-| Skip verification | Run tests + `read_lints` after fix |
-| Over-refactor during fix | Minimal change only |
-| Sequential research (slow) | PARALLEL tool calls |
-| Use Serena to edit code | Use Cursor editor only |
-
----
-
-## 📝 VERIFICATION CHECKLIST
-
-After every fix:
-- [ ] Bug reproduced? Triggered original error?
-- [ ] Root cause identified? Know WHY it happened?
-- [ ] Research done? Used appropriate MCP tools?
-- [ ] Minimal change? Only fixed bug, no extras?
-- [ ] Tests pass? Ran test suite?
-- [ ] Linter clean? No new `read_lints` errors?
-- [ ] Edge cases? Tested boundaries?
+| Task | Tool | Usage |
+|---|---|---|
+| Find error location | Serena | `get_symbols_overview` → `find_symbol` |
+| Trace code flow | Serena | `find_referencing_symbols` |
+| Pattern search | Serena | `search_for_pattern` |
+| Research solutions | Brave + Exa | Web + code search |
+| Deep extraction | Bright Data | `scrape_batch` |
+| Check docs | Context7 | `get-library-docs` |
+| GitHub examples | Octocode | `githubSearchCode` |
+| Run tests | Terminal | `pytest`, `npm test` |
+| Check errors | Cursor | Diagnostics Panel + `read_lints` |
+| Debug execution | Cursor | Breakpoints + Step Through |
 
 ---
 
-## 🎓 WORKFLOW EXAMPLES BY BUG TYPE
+## ✅ BEST PRACTICES
 
-### Import Error (QUICK FIX - 5 min)
-```
-read_lints → "ModuleNotFoundError: pandas"
-→ exa_get_code_context("python pandas install")
-→ Fix: Add "pandas==2.0.0" to requirements.txt
-→ pip install → Verify ✅
+### DO's ✅
+1. Always reproduce first
+2. Use version control
+3. Test thoroughly (unit + integration + manual)
+4. Document root cause
+5. Use systematic approach
+6. Verify assumptions with evidence
+7. Check recent changes (git log)
+8. Read error messages carefully
+
+### DON'Ts ❌
+1. Don't guess and commit
+2. Don't fix symptoms only
+3. Don't skip testing
+4. Don't make multiple changes at once
+5. Don't ignore warnings
+6. Don't rush
+7. Don't work in isolation
+
+---
+
+## 🎓 REAL-WORLD EXAMPLE
+
+**Bug:** "TypeError: Cannot read property 'map' of undefined"
+
+**Phase 1: Reproduce**
+- Navigate to /dashboard → Click "Load Data" → Crash (100%)
+- Stack trace: `dashboard.js:45`
+
+**Phase 2: Locate**
+```python
+get_symbols_overview("src/dashboard.js")
+find_symbol("renderChart", "src/dashboard.js", include_body=True)
+# Line 45: return data.map(item => ...)
+
+find_referencing_symbols("renderChart", "src/dashboard.js")
+# Called from loadData()
+
+find_symbol("loadData", "src/dashboard.js", include_body=True)
+# Calls API → immediately calls renderChart()
+# ROOT CAUSE: No null check! API returns null when no data
 ```
 
-### Logic Bug (DEEP - 40 min)
-```
-Symptom: Order total incorrect
-→ sequential-thinking: "Rounding? Tax? Discount?"
-→ find_symbol("calculate_total") → find_referencing_symbols
-→ Discover: Discount applied twice
-→ brave_web_search("prevent duplicate discount")
-→ Fix: Add discount tracking flag
-→ Test all scenarios ✅
+**Phase 3: Research**
+```python
+brave_web_search("javascript cannot read property map undefined fix")
+exa_get_code_context_exa("javascript null check before map")
+# Result: Add null/array validation before map()
 ```
 
-### API Error (LIBRARY - 20 min)
-```
-"stripe.error.InvalidRequestError"
-→ find_symbol("process_payment", include_body=True)
-→ PARALLEL: exa + context7_resolve + brave + octocode
-→ context7_get-library-docs("/stripe/stripe-python", topic="payment")
-→ Found: Missing "currency" field
-→ Fix: Add currency="usd"
-→ Test payment ✅
+**Phase 4: Fix & Test**
+```javascript
+// Before:
+async function loadData() {
+  const data = await fetchDataFromAPI();
+  renderChart(data);  // Crash if null
+}
+
+// After:
+async function loadData() {
+  const data = await fetchDataFromAPI();
+  if (!data || !Array.isArray(data)) {
+    showEmptyState();
+    return;
+  }
+  renderChart(data);
+}
 ```
 
-### Slow Query (PERFORMANCE - 30 min)
-```
-API takes 5 seconds
-→ Profile: Database query in loop (N+1)
-→ find_symbol("get_users_with_posts")
-→ exa_get_code_context("sqlalchemy N+1 query")
-→ octocode: Examples with joinedload
-→ Fix: query.options(joinedload(User.posts))
-→ Re-profile: 0.2s (25x faster) ✅
-```
+**Testing:** ✓ Null case works ✓ Valid data works ✓ Tests pass
 
-### Data Mismatch (INTEGRATION - 35 min)
+**Commit:**
 ```
-Frontend → Backend validation fails
-→ sequential-thinking: Map data flow
-→ find_symbol: Frontend sends ISO date, backend expects Unix timestamp
-→ exa_get_code_context("javascript date unix timestamp")
-→ Fix: Frontend converts date.getTime()/1000
-→ Integration test ✅
+fix: handle null data from API
+
+Root Cause: API returns null when no records
+Solution: Added null check before renderChart()
+Tested: All cases pass
 ```
 
 ---
 
-## 🔧 EMERGENCY PROTOCOL (When Stuck 30+ Minutes)
+## 🚨 SPECIAL CASES
 
-1. **STOP** - Don't try random fixes
-2. **DOCUMENT** - What tried / researched / learned
-3. **sequential-thinking** - List: known / unknown / what info would unblock
-4. **ASK USER** - Present findings, request: clarification / logs / expected behavior
-5. **WORKAROUND** - Suggest temporary fix while investigating root cause
+**Intermittent Bugs:** Add logging, monitor patterns, use sequential-thinking MCP
 
-**Remember:** Better to ask than break working code with guesses.
+**Performance Bugs:** Profile (DevTools, cProfile), identify bottlenecks, benchmark
 
----
+**Integration Bugs:** Test independently, check network logs, verify configs
 
-## 📚 TOOL SELECTION CHEATSHEET
-
-| Need | Tool | Example |
-|-----|-----|-----|
-| Code structure | `get_symbols_overview` | Understand file layout |
-| Find symbol | `find_symbol` | Locate class/function |
-| Trace usage | `find_referencing_symbols` | Who calls this? |
-| Pattern search | `search_for_pattern` | Find regex matches |
-| Usage examples | `exa_get_code_context` | How to use API |
-| Official docs | `context7_get-library-docs` | Authoritative spec |
-| Real fixes | `octocode_githubSearchCode` | GitHub solutions |
-| Concepts | `brave_web_search` | General research |
-| Root cause | `sequential-thinking mcp` | Structured analysis |
-| Edit code | Cursor Editor | Never Serena |
+**No Error Message:** Add logging, binary search, use debugger
 
 ---
 
-## 🎯 QUICK DECISION GUIDE
+## 💡 KEY PRINCIPLES
 
-**Step 1:** Read error message / symptom
-**Step 2:** Check Decision Matrix (line 124) → Pick approach
-**Step 3:** Follow tool sequence for that approach
-**Step 4:** Research with PARALLEL calls
-**Step 5:** Fix with minimal change
-**Step 6:** Verify with checklist (line 256)
+**Golden Rule:** "The bug is always in the code you're sure is correct."
+
+**Scientific Method:**
+1. Observe (reproduce)
+2. Hypothesize (theories)
+3. Test (verify)
+4. Conclude (root cause)
+5. Verify (fix works)
+
+**Communication:** Always explain to user:
+- What the bug was
+- Why it happened (root cause)
+- How you fixed it
+
+---
+
+## 📝 COMPLETION CHECKLIST
+
+Before declaring "bug fixed":
+- [ ] Bug consistently reproducible
+- [ ] Root cause identified (not symptoms)
+- [ ] Research completed
+- [ ] Minimal changes made
+- [ ] Original bug no longer occurs
+- [ ] Tests pass
+- [ ] No new linter errors
+- [ ] Code documented (comments + commit)
 
 ---
 
-**KEY REMINDERS:**
-1. Research BEFORE fixing (always use MCP tools)
-2. Root cause, not symptoms (use `sequential-thinking` for complex bugs)
-3. Minimal changes only (no refactoring during bug fix)
-4. Parallel tool calls (faster research)
-5. Always verify (tests + lints)
-
----
+**REMEMBER:** Debugging improves with practice. Stay systematic, verify with evidence, and communicate clearly! 🚀
