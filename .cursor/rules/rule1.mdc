@@ -2,7 +2,7 @@
 description: Bug Handling Workflow Rules
 alwaysApply: true
 ---
-# Bug Handling Workflow Rules
+# Bug Handling Workflow Rules (Used for BUGS in code only)
 
 **PURPOSE:** Systematic methodology for identifying, analyzing, and resolving bugs efficiently.
 
@@ -108,39 +108,9 @@ mcp_serena_search_for_pattern(
 
 ### PHASE 3: RESEARCH SOLUTIONS
 
-**Goal:** Find how others solved similar issues
-
-#### A. Parallel Research (run in same batch)
-
-```python
-# 1. General web search
-mcp_brave-search_brave_web_search(
-    query="[exact error] [language] [framework]",
-    count=10
-)
-
-# 2. Code examples
-mcp_exa_get_code_context_exa(
-    query="how to fix [error type] in [framework]",
-    tokensNum=3000
-)
-
-# 3. GitHub search
-mcp_octocode_githubSearchCode(
-    queries=[{
-        "keywordsToSearch": ["error_keyword", "fix"],
-        "match": "file",
-        "limit": 5
-    }]
-)
-
-# 4. Official docs
-mcp_context7_resolve-library-id(libraryName="library-name")
-mcp_context7_get-library-docs(
-    context7CompatibleLibraryID="/org/project",
-    topic="error handling"
-)
-```
+In phase research solutions, we focus only on two mcp tools: exa and octocode
+1. Exa for fast glance searching for solution in any websites
+2. Octocode for deep dive into problems in github
 
 **Research Checklist:**
 - [ ] Stack Overflow for exact error
@@ -148,14 +118,8 @@ mcp_context7_get-library-docs(
 - [ ] Official documentation
 - [ ] Blog posts/tutorials
 
-#### B. For Complex Bugs
 
-```python
-# Extract full content from promising URLs
-mcp_Bright_Data_scrape_batch(urls=["url1", "url2"])  # Max 10
-```
-
-#### C. Evaluate Solutions
+#### B. Evaluate Solutions
 
 **Criteria:** Relevance, Recency, Authority, Completeness, Verification
 
@@ -168,7 +132,7 @@ SOLUTION CANDIDATES:
    - Confidence: High/Medium/Low
 ```
 
-#### D. If No Existing Solution
+#### C. If No Existing Solution
 
 1. Read official docs thoroughly (API refs, error guides, FAQs)
 2. Analyze library source code (use Octocode)
@@ -240,7 +204,7 @@ read_lints(["path/to/file.py"])
 | Trace code flow | Serena | `find_referencing_symbols` |
 | Pattern search | Serena | `search_for_pattern` |
 | Research solutions | Brave + Exa | Web + code search |
-| Deep extraction | Bright Data | `scrape_batch` |
+| Deep extraction | exa_web_crawl | Extract |
 | Check docs | Context7 | `get-library-docs` |
 | GitHub examples | Octocode | `githubSearchCode` |
 | Run tests | Terminal | `pytest`, `npm test` |

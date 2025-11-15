@@ -1,11 +1,11 @@
 ---
-description: Problem Analysis & Solution Discovery Rule
+description: Problem Analysis & Solution Discovery Rule (Not for BUGS in code)
 alwaysApply: true
 ---
 
-# Problem Analysis & Solution Discovery Rule
+# Problem Analysis & Solution Discovery Rule (Not used for BUGS in code)
 
-**GOAL:** Research deeply, analyze thoroughly, provide evidence-based solutions for ANY problem (technical or non-technical).
+**GOAL:** Research deeply, analyze thoroughly, provide evidence-based solutions for problems not related to BUGS in code
 
 **WHEN TO USE:**
 - User needs help finding solutions to a problem
@@ -109,7 +109,7 @@ Still uncertain? → Start LIGHT, escalate if needed ⚠️
 | Research Goal | Primary Tool | Usage Notes |
 |--------------|--------------|----------------|
 | **General info/overview** | `brave_web_search` and `exa_web_search` | Broad queries, articles, discussions |
-| **Deep content extraction** | `Bright_Data_scrape_batch` | Extract full content from top URLs (max 10) |
+| **Deep content extraction** | `exa_web_crawl` | Extract full content from top URLs (max 10) |
 | **Official docs** | `mcp_context7_resolve-library-id` → `mcp_context7_get-library-docs` | Authoritative library/framework docs; set `topic` to narrow scope |
 | **Code examples** | `exa_get_code_context` and `octocode_githubSearchCode` | Real-world patterns & implementations |
 | **Full source files** | `octocode_githubGetFileContent` | Complete context, imports, structure |
@@ -118,7 +118,7 @@ Still uncertain? → Start LIGHT, escalate if needed ⚠️
 
 **Research Strategy:**
 1. **Start broad**: Web search → identify key URLs/concepts
-2. **Go deep**: Scrape top URLs with Bright Data for detailed content
+2. **Go deep**: Scrape top URLs with exa_web_crawl for detailed content
 3. **Get technical**: Exa for docs and code patterns
 4. **Validate with evidence**: Octocode for full-file context from quality repos
 5. **Synthesize**: Combine external research + internal knowledge
@@ -201,7 +201,7 @@ Use this as a guide, adapt based on problem complexity:
 
 ## RESEARCH INSIGHTS
 - **FROM [Brave/Exa Search]:** [Key findings + URLs]
-- **FROM [Bright Data Scrape]:** [Deep content insights]
+- **FROM [exa_web_crawl]:** [Deep content insights]
 - **FROM [Context7/Docs]:** [Official documentation highlights]
 - **FROM [Exa Code/Octocode]:** [Real-world implementation examples with citations]
 
@@ -280,7 +280,7 @@ Use this as a guide, adapt based on problem complexity:
 |------|-------------|-------------|---------|---------|
 | Plan investigation | `sequential-thinking mcp` | Structure approach | Brief | Detailed |
 | General research | `brave_web_search` and `exa_web_search` | Articles, discussions | ✓ | ✓ |
-| Deep content | `Bright_Data_scrape_batch` | Extract from URLs (max 10) | ✗ | ✓ |
+| Deep content | `exa_web_crawl` | Extract from URL | ✗ | ✓ |
 | Official docs | `exa_get_code_context` | Authoritative sources | ✓ | ✓ |
 | Code patterns | `exa_get_code_context` | Real-world examples | ✓ | ✓ |
 | GitHub search | `octocode_githubSearchCode` | Find proven implementations | ✗ | ✓ |
@@ -325,7 +325,7 @@ Use this as a guide, adapt based on problem complexity:
 **Action:**
 1. `sequential-thinking mcp`: Break down requirements
 2. `brave_web_search` and `exa_web_search`: Current trends in analytics pipelines
-3. `Bright_Data_scrape_batch`: Deep dive into top 3-5 articles
+3. `exa_web_crawl`: Deep dive into top 3-5 articles
 4. `exa_get_code_context`: Research Kafka, Flink, Spark docs
 5. `octocode_githubSearchRepositories`: Find production examples
 6. Compare 3 alternatives (Lambda vs Kappa vs Hybrid)
@@ -369,7 +369,7 @@ Use this as a guide, adapt based on problem complexity:
 
 ### Tool Selection Guide:
 - **Simple problem?** Pick 1-2: `brave_web_search` OR `exa_web_search`
-- **Complex problem?** Use 3+: All tools above + `Bright_Data_scrape_batch` + `octocode_*` + `sequential-thinking mcp`
+- **Complex problem?** Use 3+: All tools above + `exa_web_crawl` + `octocode_*` + `sequential-thinking mcp`
 
 ### Remember:
 **Context is expensive. Research smart, not hard.**
