@@ -1,9 +1,9 @@
 ---
-description: Problem Analysis & Solution Discovery Rule (Not for BUGS in code)
+description: Problem Analysis & Solution Discovery Rule (Not in fixing BUGS in code)
 alwaysApply: true
 ---
 
-# Problem Analysis & Solution Discovery Rule (Not used for BUGS in code)
+# Problem Analysis & Solution Discovery Rule (Not used in fixingBUGS in code)
 
 **GOAL:** Research deeply, analyze thoroughly, provide evidence-based solutions for problems not related to BUGS in code
 

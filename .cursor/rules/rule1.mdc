@@ -1,8 +1,8 @@
 ---
-description: Bug Handling Workflow Rules
+description: Bug Handling Workflow Rules (Used in fixing BUGS in code only)
 alwaysApply: true
 ---
-# Bug Handling Workflow Rules (Used for BUGS in code only)
+# Bug Handling Workflow Rules (Used in fixing BUGS in code only)
 
 **PURPOSE:** Systematic methodology for identifying, analyzing, and resolving bugs efficiently.
 
