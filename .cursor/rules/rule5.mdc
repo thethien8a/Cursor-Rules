@@ -29,7 +29,7 @@ alwaysApply: true
 
 ---
 
-## 2. The 8 Core Memory Documents
+## 2. The 4 Core Memory Documents
 
 *These are the mandatory files that form the project's knowledge base.*
 
@@ -45,25 +45,9 @@ alwaysApply: true
 - **Key Sections:** High-Level Architecture Diagram/Description, Core Components, Data Flow, Key Implementation Patterns.
 - **Build With:** `find_symbol`, `find_referencing_symbols`, targeted `read_file`.
 
-#### 4. `development-operations-guide`
-- **Key Sections:** Quick Start Commands, Local Setup, Testing Procedures, Deployment Workflow.
-- **Build With:** `read_file` on `docker-compose.yml`, `requirements.txt`, CI/CD files.
-
-#### 5. `llm-quick-reference-index`
-- **Key Sections:** Index of Critical Symbols, Key APIs, Common "Gotchas", Important Configuration Variables.
+#### 4. `llm-quick-reference-index`
+- **Key Sections:** Index of Critical Symbols, Key APIs, Common "Gotchas", Important Configuration Variables, Quick Start Commands.
 - **Build With:** Continuous updates from the "UPDATE" step in daily operations.
-
-#### 6. `project-history-and-evolution`
-- **Key Sections:** Timeline of Major Milestones, Lessons Learned from past refactors.
-- **Build With:** Git history, PR descriptions, and major task summaries.
-
-#### 7. `business-context-and-domain-knowledge.md`
-- **Key Sections:** Core Business Problem, Target Audience/User Personas, Key Business Workflows, Domain-Specific Glossary.
-- **Build With:** Product documentation, user stories, interviews with stakeholders.
-
-#### 8. `testing-strategy-and-quality-assurance.md`
-- **Key Sections:** Testing Philosophy, Tooling and Frameworks, How to Run Tests, Key Test Scenarios.
-- **Build With:** `read_file` on testing configs, CI files, and analyzing existing test suites.
 
 ---
 
