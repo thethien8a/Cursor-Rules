@@ -1,450 +1,122 @@
 ---
-description: Codebase Exploration Rules
+description: Problem Analysis & Solution Discovery Rule (Not in fixing BUGS in code)
 alwaysApply: true
 ---
-# Codebase Exploration Rules
 
-**PURPOSE:** Master Serena MCP to understand ANY codebase FAST using MINIMAL tokens.
+# Problem Analysis & Solution Discovery Rule
 
-**CORE PRINCIPLE:** Symbol-level thinking, not file-level reading. Think like an IDE.
-
----
-
-## 🎯 THE GOLDEN RULE
-
-**❌ NEVER:**
-```python
-read_file("src/large_file.py")  # 1000 lines = 5000-10000 tokens
-```
-
-**✅ ALWAYS:**
-```python
-get_symbols_overview("src/large_file.py")  # 50 tokens - see structure
-find_symbol("Class/method", include_body=True)  # 100 tokens - only what you need
-```
-
-**Result:** 95% token savings!
+**GOAL:** Research deeply, analyze thoroughly, provide evidence-based solutions for non-bug problems.
+**WHEN TO USE:** "How to solve X?", "What should I do?", Exploring options, Architectural decisions.
+**CORE PRINCIPLE:** Never guess. Research depth matches problem complexity.
 
 ---
 
-## 📋 THE 5-PHASE WORKFLOW
+## STEP 0: ASSESS COMPLEXITY
 
-**Order is mandatory. Never skip phases.**
+**Decision Tree:**
+- Straightforward "how to"? → **LIGHT WORKFLOW**
+- Known solution pattern? → **LIGHT WORKFLOW**
+- Architectural decision? → **DEEP WORKFLOW**
+- Multi-component scope? → **DEEP WORKFLOW**
+- Vague/Exploratory? → **DEEP WORKFLOW**
+- Uncertain? → Start **LIGHT**, escalate if needed.
 
-### Phase 1: ACTIVATE (Always first)
-
-```python
-activate_project("/absolute/path/to/project")
-# OR if previously activated:
-activate_project("project_name")
-```
-
-**Critical:** All Serena tools require active project.
-
----
-
-### Phase 2: STRUCTURE (Map territory)
-
-**Goal:** Understand layout WITHOUT reading code
-
-```python
-list_dir(relative_path=".", recursive=True)
-```
-
-**Token cost:** ~100-500 (one-time)
-**Identify:** src/, tests/, config/, docs/
+**Criteria:**
+- **Simple:** Single component, known pattern, low risk.
+- **Complex:** Multi-component, novel/unclear, high impact.
 
 ---
 
-### Phase 3: OVERVIEW (Table of contents)
-
-**Goal:** See WHAT symbols exist WITHOUT implementation
-
-```python
-# Start with entry points
-get_symbols_overview("src/main.py")
-get_symbols_overview("src/app.py")
-get_symbols_overview("src/api/routes.py")
-```
-
-**Output example:**
-```
-File: src/auth/service.py
-Classes:
-  - AuthService (line 10)
-  - TokenManager (line 45)
-Functions:
-  - validate_credentials (line 80)
-```
-
-**Token cost:** ~50-100 per file
-**Value:** All symbols, zero implementation reading
-
-**Rule:** ALWAYS overview before reading!
+## LIGHT WORKFLOW (Simple)
+**Use:** Clear request, known patterns, low risk.
+1. **Quick Check:** Core question? Do I know the answer?
+2. **Minimal Research:** 1-2 tools max (`exa_get_code_context` for docs/patterns, `brave/exa_web_search` for general).
+3. **Direct Solution:** 1 recommended approach, brief explanation, steps.
+4. **Quick Validation:** Verify/guide implementation.
 
 ---
 
-### Phase 4: NAVIGATE (Locate & understand)
+## DEEP WORKFLOW (Complex)
+**Use:** High risk, unclear requirements, architectural decisions.
 
-#### 4A. Find Symbol Location
+### PHASE 1: PLAN & UNDERSTAND
+- **Plan:** `sequential-thinking` (map knowledge needs).
+- **Multi-Source Research:**
+  - General: `brave/exa_web_search`.
+  - Deep Content: `exa_web_crawl` (top URLs).
+  - Docs: `mcp_context7`.
+  - Code/Repo: `octocode_githubSearchCode`, `githubViewRepoStructure`.
+  - Strategy: Broad → Deep → Technical → Validate → Synthesize.
 
-```python
-# Basic search
-find_symbol(
-    name_path="ClassName",
-    relative_path="",           # Entire project
-    include_body=False,         # Signature only (fast!)
-    depth=0                     # Just this symbol
-)
+### PHASE 2: DISCOVER ALTERNATIVES
+- **Goal:** 2-3 distinct approaches.
+- **Document:** Description, Pros/Cons, Complexity, Timeline, Dependencies.
 
-# Specific search
-find_symbol(
-    name_path="/ClassName/method",  # Absolute path
-    relative_path="src/auth/",      # Narrow scope
-    include_body=False,
-    depth=1                         # Include children
-)
-```
+### PHASE 3: EVALUATE & DECIDE
+- **Criteria:** Performance, Maintainability, Time, Cost (weighted).
+- **Score:** Use `sequential-thinking` for comparison matrix.
+- **Recommend:** Best option with reasoning, confidence, and risks.
 
-**Name patterns:**
-- `"ClassName"` - Find anywhere
-- `"/ClassName"` - Top-level only
-- `"ClassName/method"` - Method in class
-- `"/ClassName/method"` - Absolute path
-
-**Token cost (include_body=False):** ~20-50 tokens
-
-#### 4B. Understand Relationships
-
-```python
-# WHO CALLS THIS? (Critical!)
-find_referencing_symbols(
-    name_path="ClassName/method",
-    relative_path="src/auth/service.py"
-)
-```
-
-**Token cost:** ~100-300
-**Value:** Complete call graph
-
-**Rule:** ALWAYS check references before changes!
+### PHASE 4: VALIDATE & PLAN
+- **Confirm:** Summarize understanding.
+- **Plan:** Immediate/Short-term/Medium-term steps.
+- **Success:** Metrics and Verification methods.
 
 ---
 
-### Phase 5: DEEP DIVE (Read strategically)
+## RESPONSE TEMPLATE (Flexible)
 
-#### Option A: Read Symbol (Preferred)
+```markdown
+## EXECUTIVE SUMMARY
+[Problem + Solution + Insight]
 
-```python
-find_symbol(
-    name_path="ClassName/method",
-    relative_path="src/auth/service.py",
-    include_body=True,    # Now read implementation
-    depth=0
-)
-```
+## PROBLEM ANALYSIS
+[Context & Constraints]
 
-**Token cost:** 50-200 (just the method)
-**vs entire file:** 5000-10000 tokens
-**Savings:** 95-98%!
+## RESEARCH INSIGHTS
+- [Source]: [Findings]
 
-#### Option B: Read File Ranges (When necessary)
+## SOLUTION OPTIONS
+### Option 1: [Name]
+**Description:** ... | **Pros/Cons:** ... | **Complexity:** ...
 
-```python
-read_file(
-    relative_path="src/config.py",
-    start_line=10,
-    end_line=30
-)
-```
+## EVALUATION & RECOMMENDATION
+| Option | Crit 1 | Crit 2 | Score |
+|--------|--------|--------|-------|
+**RECOMMENDED:** [Option]
+**WHY:** [Reasoning]
 
-**Use only for:**
-- Config files (JSON, YAML)
-- Files <100 lines
-- Non-code files (README)
-
-**Rule:** NEVER read_file without line ranges unless <100 lines!
-
----
-
-## 🔍 PATTERN SEARCH
-
-**When:** Don't know exact name, need regex
-
-```python
-search_for_pattern(
-    substring_pattern=r"def handle_.*:",
-    relative_path="src/api/",
-    paths_include_glob="*.py",
-    context_lines_before=2,
-    context_lines_after=2
-)
-```
-
-**Use cases:**
-- Find handlers: `r"def handle_.*"`
-- Find TODOs: `r"# TODO"`
-- Find routes: `r"@app\.route"`
-
-**Token cost:** 200-1000 (variable)
-
----
-
-## 💾 MEMORY SYSTEM
-
-**Serena remembers across sessions!**
-
-```python
-# ALWAYS start sessions with:
-list_memories()
-read_memory("project-overview-and-status")
-read_memory("technical-architecture-and-patterns")
-
-# Save insights after investigation:
-write_memory(
-    memory_name="feature-name",
-    content="... what you learned ..."
-)
-```
-
-**Token investment:** ~200 to write
-**Token savings:** 5000+ in future sessions!
-
----
-
-## 📊 TOOL DECISION MATRIX
-
-| Goal | Tool | Tokens | When |
-|------|------|--------|------|
-| File tree | `list_dir(recursive=True)` | 100-500 | First step |
-| Symbols in file | `get_symbols_overview` | 50-100 | Before reading |
-| Find location | `find_symbol(include_body=False)` | 20-50 | Know name |
-| Read code | `find_symbol(include_body=True)` | 50-200 | Need implementation |
-| Who calls? | `find_referencing_symbols` | 100-300 | Understand deps |
-| File section | `read_file(start, end)` | 50-500 | Targeted only |
-| Regex search | `search_for_pattern` | 200-1000 | Unknown name |
-| Load knowledge | `read_memory` | 100-500 | Session start |
-| Save insights | `write_memory` | 200 | Session end |
-
----
-
-## ⚡ OPTIMIZATION TECHNIQUES
-
-### 1. Progressive Refinement
-
-```python
-# ✅ RIGHT: Progressive narrowing (380 tokens total)
-get_symbols_overview("src/service.py")           # 50 tokens
-find_symbol("Service", include_body=False)       # 30 tokens
-find_referencing_symbols("Service", "src/...")   # 200 tokens
-find_symbol("Service/method", include_body=True) # 100 tokens
-
-# ❌ WRONG: Read everything (5000 tokens)
-read_file("src/service.py")
-```
-
-**Savings:** 92%!
-
-### 2. Depth Parameter Strategy
-
-```python
-# depth=0: Just symbol (fast)
-find_symbol("Class", depth=0, include_body=False)  # Signature only
-
-# depth=1: Include children (structure)
-find_symbol("Class", depth=1, include_body=False)  # All methods (signatures)
-
-# depth=1 + body: Full class
-find_symbol("Class", depth=1, include_body=True)   # Complete implementation
-```
-
-**Use:**
-- `depth=0, include_body=False` → Find location
-- `depth=1, include_body=False` → Class structure
-- `depth=0, include_body=True` → Single method
-- `depth=1, include_body=True` → Entire class (only when needed)
-
-### 3. Parallel Exploration
-
-```python
-# ✅ Parallel (in same tool_calls block)
-get_symbols_overview("src/auth/service.py")
-get_symbols_overview("src/api/routes.py")
-get_symbols_overview("src/database/models.py")
-
-# ❌ Sequential (slower)
-# One at a time, wait for each result
-```
-
-### 4. Scope Narrowing
-
-```python
-# ❌ Too broad
-find_symbol("helper", relative_path="")
-
-# ✅ Narrow scope (50-80% fewer results)
-find_symbol("helper", relative_path="src/utils/")
+## IMPLEMENTATION ROADMAP
+**Immediate:** ...
+**Short-term:** ...
 ```
 
 ---
 
-## 🎓 REAL-WORLD EXAMPLE
-
-**Task:** Understand authentication flow (10 min, <2000 tokens)
-
-```python
-# 1. Activate
-activate_project("/path/to/project")
-
-# 2. Check memory
-list_memories()
-read_memory("project-overview-and-status")
-
-# 3. Find entry point
-get_symbols_overview("src/api/routes.py")
-# Shows: login_endpoint, logout_endpoint
-
-# 4. Navigate to auth
-find_symbol("AuthService", relative_path="src/", include_body=False)
-# Output: src/auth/service.py:10
-
-# 5. See structure
-find_symbol("AuthService", depth=1, include_body=False)
-# Shows methods: login(), logout(), verify_token()
-
-# 6. Understand usage
-find_referencing_symbols("AuthService", "src/auth/service.py")
-# Called from: routes.py, middleware.py
-
-# 7. Read implementation
-find_symbol("AuthService/login", include_body=True)
-
-# 8. Save knowledge
-write_memory("authentication-flow", "... insights ...")
-```
-
-**Total:** ~1500 tokens
-**vs reading files:** ~10,000 tokens
-**Savings:** 85%
+## VALIDATION CHECKLIST
+**Light:** Complexity assessed Simple, Minimal research (1-2 sources), Direct solution.
+**Deep:** Complexity assessed Complex, Research (3+ sources), Alternatives (2-3), Evidence-based Rec, Plan & Metrics.
 
 ---
 
-## 🚫 COMMON MISTAKES
+## MCP TOOL QUICK REFERENCE
 
-| ❌ DON'T | ✅ DO | Why |
-|---------|-------|-----|
-| `read_file("big.py")` | `get_symbols_overview` → `find_symbol` | 95% waste |
-| Read before overview | Overview first | No context |
-| `depth=1, body=True` first | `depth=0, body=False` first | Get signature |
-| Skip references | Check `find_referencing_symbols` | Miss deps |
-| Search entire project | Narrow with `relative_path` | Too many results |
-| Ignore memories | `read_memory` first | Re-discover waste |
-| Sequential calls | Parallel when possible | Slower |
-| Full file reads | Use line ranges | No precision |
+| Task | Tool | Light | Deep |
+|---|---|---|---|
+| Plan | `sequential-thinking` | Brief | Detailed |
+| Research | `brave/exa_web_search` | ✓ | ✓ |
+| Deep Content | `exa_web_crawl` | ✗ | ✓ |
+| Docs/Patterns | `exa_get_code_context` | ✓ | ✓ |
+| GitHub | `octocode_*` | ✗ | ✓ |
 
----
-
-## 📝 WORKFLOW TEMPLATE
-
-```python
-# === COPY-PASTE READY ===
-
-# 1. Activate
-activate_project("project_name")
-
-# 2. Load memories
-list_memories()
-read_memory("project-overview-and-status")
-
-# 3. Map structure (if new)
-list_dir(relative_path=".", recursive=True)
-
-# 4. Overview key files
-get_symbols_overview("src/main.py")
-
-# 5. Navigate
-find_symbol("CoreClass", include_body=False, depth=1)
-
-# 6. Relationships
-find_referencing_symbols("CoreClass", "src/file.py")
-
-# 7. Implementation
-find_symbol("CoreClass/method", include_body=True)
-
-# 8. Save
-write_memory("feature-name", "... learned ...")
-```
+**Context:** Light = ~80% saved. Deep = Comprehensive.
 
 ---
 
-## 🎯 QUICK DECISION GUIDE
-
-**New codebase?**
-```
-activate → read_memory → list_dir → get_symbols_overview → find_symbol → find_referencing_symbols
-```
-
-**Find specific code?**
-```
-get_symbols_overview → find_symbol (body=False) → find_symbol (body=True)
-```
-
-**Understand dependencies?**
-```
-find_symbol → find_referencing_symbols → find_symbol (deps)
-```
-
-**Search by pattern?**
-```
-search_for_pattern → find_symbol (validate) → read relevant
-```
-
----
-
-## 💡 PRO TIPS
-
-1. **Always activate_project first** - Nothing works without it
-2. **Memories are gold** - Read first, write last
-3. **include_body=False saves tokens** - Signatures without cost
-4. **depth=0 for speed** - Only get what you need
-5. **find_referencing_symbols is critical** - Impact analysis
-6. **Narrow scope aggressively** - Use relative_path
-7. **Parallel calls for speed** - Batch explorations
-8. **Line ranges always** - Never full read_file
-9. **Pattern search when lost** - Regex discovery
-10. **Think symbols, not files** - IDE mindset
-
----
-
-## 📚 REFERENCE
-
-**Key Parameters:**
-
-`find_symbol`:
-- `name_path`: Symbol name/path
-- `relative_path`: Scope directory
-- `include_body`: False=signature, True=implementation
-- `depth`: 0=symbol, 1=with children
-
-`get_symbols_overview`:
-- `relative_path`: File to overview
-
-`find_referencing_symbols`:
-- `name_path`: Symbol to find refs for
-- `relative_path`: File containing symbol
-
-`read_file`:
-- `relative_path`: File path
-- `start_line`: Start (required)
-- `end_line`: End (required)
-
-`search_for_pattern`:
-- `substring_pattern`: Regex
-- `relative_path`: Search scope
-- `paths_include_glob`: File filter
-
----
-
-**Serena gives you IDE-level code understanding. Master symbol-level thinking = 90-95% token savings!** 🚀
-
----
+## TL;DR - RULE SUMMARY
+1. **ASSESS** complexity (Simple vs Complex).
+2. **CHOOSE**:
+   - **LIGHT**: 1-2 tools, direct answer.
+   - **DEEP**: 3+ tools, alternatives, comprehensive analysis.
+3. **EXECUTE** & Validate.
+**Remember:** Match effort to complexity. Research smart.

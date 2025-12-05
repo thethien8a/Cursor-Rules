@@ -2,17 +2,15 @@
 description: Bug Handling Workflow Rules (Used in fixing BUGS in code only)
 alwaysApply: true
 ---
-# Bug Handling Workflow Rules (Used in fixing BUGS in code only)
+# Bug Handling Workflow Rules
 
 **PURPOSE:** Systematic methodology for identifying, analyzing, and resolving bugs efficiently.
-
-**WHEN TO APPLY:** Errors, warnings, unexpected behavior, test failures, or any code malfunction.
-
-**CORE PRINCIPLE:** Root Cause Analysis (RCA) - Solve problems at their source, not symptoms. Never guess; research, analyze, verify.
+**WHEN TO APPLY:** Errors, warnings, unexpected behavior, test failures, or code malfunctions.
+**CORE PRINCIPLE:** Root Cause Analysis (RCA) - Solve problems at their source. Research, analyze, verify.
 
 ---
 
-## 🎯 QUICK DECISION TREE
+## QUICK DECISION TREE
 
 ```
 Bug Detected → Can reproduce? → NO → Gather info (logs, conditions)
@@ -26,319 +24,81 @@ Follow 4-Phase Workflow ↓
 
 ---
 
-## 📋 THE 4-PHASE WORKFLOW
+## THE 4-PHASE WORKFLOW
 
 ### PHASE 1: REPRODUCE & UNDERSTAND
-
-**Goal:** Confirm bug exists and understand scope
-
+**Goal:** Confirm bug exists and understand scope.
 **Steps:**
-1. **Reproduce Consistently** (≥3 times with same steps)
-   - Document exact trigger steps
-   - Note conditions: OS, browser, inputs, environment, timing
-   - Try different environments (dev/staging/prod)
-
-2. **Gather Evidence**
-   - Error messages (full stack traces)
-   - Logs (application + system)
-   - Recent changes (git log, recent commits)
-   - Environment details (versions, dependencies)
-
-3. **Define Bug Characteristics**
-   - Severity: Critical/High/Medium/Low
-   - Scope: Single function/Module/System-wide
-   - Type: Syntax/Logic/Runtime/Integration/Performance
-   - Frequency: Always/Intermittent/Edge case
-
-**Tools:** Cursor Diagnostics, Terminal, Git history
-
----
+1. **Reproduce:** ≥3 times with same steps. Document trigger, conditions (OS, inputs, env).
+2. **Gather Evidence:** Error messages (stack traces), Logs, Recent changes (git), Env details.
+3. **Define:** Severity, Scope (function/system), Type (Logic/Runtime/etc), Frequency.
+**Tools:** Cursor Diagnostics, Terminal, Git history.
 
 ### PHASE 2: LOCATE ROOT CAUSE
-
-**Goal:** Pinpoint exact code location causing bug
-
-#### A. Start with Error Message/Stack Trace
-
-```python
-# Example: "AttributeError: 'NoneType' object has no attribute 'process'"
-
-# Get overview
-mcp_serena_get_symbols_overview("path/to/error_file.py")
-
-# Find problematic symbol
-mcp_serena_find_symbol(
-    name_path="ClassName/method_name",
-    relative_path="path/to/error_file.py",
-    include_body=True
-)
-
-# Check callers (trace data flow)
-mcp_serena_find_referencing_symbols(
-    name_path="ClassName/method_name",
-    relative_path="path/to/error_file.py"
-)
-```
-
-#### B. If Error Location Unknown
-
-```python
-# Search for error patterns
-mcp_serena_search_for_pattern(
-    substring_pattern=r"def process.*:",
-    relative_path="src/",
-    paths_include_glob="*.py",
-    context_lines_before=3,
-    context_lines_after=3
-)
-
-# Or use Cursor Search for exact strings
-```
-
-#### C. Isolate Problem (Binary Search)
-1. Comment out half of suspicious code
-2. Run test/reproduce bug
-3. If bug persists → problem in active half
-4. If bug disappears → problem in commented half
-5. Repeat until exact lines found
-
-**Tools:** Serena MCP (`find_symbol`, `find_referencing_symbols`, `search_for_pattern`), Cursor Debugger
-
----
+**Goal:** Pinpoint exact code location.
+**Strategies:**
+A. **Stack Trace:** Use `mcp_serena_get_symbols_overview` → `find_symbol` (include body) → `find_referencing_symbols`.
+B. **Pattern Search:** If unknown, use `mcp_serena_search_for_pattern` or Cursor Search.
+C. **Binary Search:** Comment out code halves to isolate.
+**Tools:** Serena MCP (`find_symbol`, `find_referencing_symbols`), Cursor Debugger.
 
 ### PHASE 3: RESEARCH SOLUTIONS
-
-In phase research solutions, we focus only on two mcp tools: exa and octocode
-1. Exa for fast glance searching for solution in any websites
-2. Octocode for deep dive into problems in github
-
-**Research Checklist:**
-- [ ] Stack Overflow for exact error
-- [ ] GitHub Issues in relevant repos
-- [ ] Official documentation
-- [ ] Blog posts/tutorials
-
-
-#### B. Evaluate Solutions
-
-**Criteria:** Relevance, Recency, Authority, Completeness, Verification
-
-**Document:**
-```
-SOLUTION CANDIDATES:
-1. From [Source]:
-   - Approach: [Description]
-   - Why it works: [Root cause]
-   - Confidence: High/Medium/Low
-```
-
-#### C. If No Existing Solution
-
-1. Read official docs thoroughly (API refs, error guides, FAQs)
-2. Analyze library source code (use Octocode)
-3. Understand expected vs actual behavior
-4. Form hypotheses (use `sequential-thinking mcp`)
-5. Test each hypothesis systematically
-
----
+**Goal:** Find proven solutions using `exa` (web) and `octocode` (github).
+**Checklist:** Stack Overflow, GitHub Issues, Official Docs.
+**If No Solution:** Read docs, analyze source (Octocode), form hypotheses (`sequential-thinking`), test systematically.
 
 ### PHASE 4: IMPLEMENT & TEST FIX
-
-**Goal:** Apply solution without introducing new bugs
-
-#### A. Pre-Implementation
-
-```python
-# Check impact first
-mcp_serena_think_about_task_adherence()
-mcp_serena_find_referencing_symbols(name, path)  # See all callers
-```
-
-**Checklist:**
-- [ ] Understand root cause (not symptoms)
-- [ ] Clear solution approach
-- [ ] Know which files/functions to modify
-- [ ] Identified all affected code paths
-- [ ] Backed up state (`git stash` or commit)
-
-#### B. Implementation Best Practices
-
-1. **Minimal Changes** - Only what's necessary, one bug = one fix
-
-2. **Add Defensive Code**
-```python
-# Add null checks, validation, better error messages
-if data is None:
-    logger.error("Data is None in process_data()")
-    raise ValueError("Expected data, got None")
-```
-
-3. **Add Comments** - Explain WHY (root cause + solution), not WHAT
-
-4. **Follow Code Style** - Match project conventions
-
-#### C. Testing Levels
-
-```bash
-# 1. Unit test
-pytest tests/test_module.py::test_case -v
-
-# 2. Reproduce original bug (should not occur)
-
-# 3. Regression test
-pytest tests/ -v
-
-# 4. Check linter
-read_lints(["path/to/file.py"])
-
-# 5. Manual testing (happy path + edge cases)
-```
+**Goal:** Apply solution without new bugs.
+**Pre-Implementation Check:**
+- Understand root cause (not symptoms).
+- Check impact: `mcp_serena_find_referencing_symbols`.
+- Backup state.
+**Implementation:**
+- Minimal changes.
+- Add defensive code (null checks, validation).
+- Add comments explaining WHY.
+- Follow code style.
+**Testing Levels:**
+1. Unit Test (`pytest ...`)
+2. Reproduce (should fail)
+3. Regression Test (`pytest`)
+4. Linter (`read_lints`)
+5. Manual Testing
 
 ---
 
-## 🛠️ TOOL DECISION MATRIX
+## TOOL DECISION MATRIX
 
-| Task | Tool | Usage |
-|---|---|---|
-| Find error location | Serena | `get_symbols_overview` → `find_symbol` |
-| Trace code flow | Serena | `find_referencing_symbols` |
-| Pattern search | Serena | `search_for_pattern` |
-| Research solutions | Brave + Exa | Web + code search |
-| Deep extraction | exa_web_crawl | Extract |
-| Check docs | Context7 | `get-library-docs` |
-| GitHub examples | Octocode | `githubSearchCode` |
-| Run tests | Terminal | `pytest`, `npm test` |
-| Check errors | Cursor | Diagnostics Panel + `read_lints` |
-| Debug execution | Cursor | Breakpoints + Step Through |
+| Task | Tool |
+|---|---|
+| Find error location | Serena (`get_symbols_overview` → `find_symbol`) |
+| Trace code flow | Serena (`find_referencing_symbols`) |
+| Research solutions | Brave + Exa |
+| Check docs | Context7 |
+| GitHub examples | Octocode |
+| Run tests | Terminal (`pytest`) |
+| Check errors | Cursor (Diagnostics, `read_lints`) |
 
 ---
 
-## ✅ BEST PRACTICES
+## BEST PRACTICES
 
-### DO's ✅
-1. Always reproduce first
-2. Use version control
-3. Test thoroughly (unit + integration + manual)
-4. Document root cause
-5. Use systematic approach
-6. Verify assumptions with evidence
-7. Check recent changes (git log)
-8. Read error messages carefully
-
-### DON'Ts ❌
-1. Don't guess and commit
-2. Don't fix symptoms only
-3. Don't skip testing
-4. Don't make multiple changes at once
-5. Don't ignore warnings
-6. Don't rush
-7. Don't work in isolation
+**DO's:** Reproduce first, Use Version Control, Test Thoroughly, Document Root Cause, Systematic Approach.
+**DON'Ts:** Guess & Commit, Fix Symptoms Only, Skip Testing, Ignore Warnings, Rush.
 
 ---
 
-## 🎓 REAL-WORLD EXAMPLE
-
-**Bug:** "TypeError: Cannot read property 'map' of undefined"
-
-**Phase 1: Reproduce**
-- Navigate to /dashboard → Click "Load Data" → Crash (100%)
-- Stack trace: `dashboard.js:45`
-
-**Phase 2: Locate**
-```python
-get_symbols_overview("src/dashboard.js")
-find_symbol("renderChart", "src/dashboard.js", include_body=True)
-# Line 45: return data.map(item => ...)
-
-find_referencing_symbols("renderChart", "src/dashboard.js")
-# Called from loadData()
-
-find_symbol("loadData", "src/dashboard.js", include_body=True)
-# Calls API → immediately calls renderChart()
-# ROOT CAUSE: No null check! API returns null when no data
-```
-
-**Phase 3: Research**
-```python
-brave_web_search("javascript cannot read property map undefined fix")
-exa_get_code_context_exa("javascript null check before map")
-# Result: Add null/array validation before map()
-```
-
-**Phase 4: Fix & Test**
-```javascript
-// Before:
-async function loadData() {
-  const data = await fetchDataFromAPI();
-  renderChart(data);  // Crash if null
-}
-
-// After:
-async function loadData() {
-  const data = await fetchDataFromAPI();
-  if (!data || !Array.isArray(data)) {
-    showEmptyState();
-    return;
-  }
-  renderChart(data);
-}
-```
-
-**Testing:** ✓ Null case works ✓ Valid data works ✓ Tests pass
-
-**Commit:**
-```
-fix: handle null data from API
-
-Root Cause: API returns null when no records
-Solution: Added null check before renderChart()
-Tested: All cases pass
-```
+## REAL-WORLD EXAMPLE (Summary)
+**Bug:** "Cannot read property 'map' of undefined"
+**Locate:** Trace stack trace to `data.map(...)`.
+**Root Cause:** API returns null when no data, missing check.
+**Fix:** Add `if (!data || !Array.isArray(data)) return;` before map.
+**Verify:** Null case handled, valid data works.
 
 ---
 
-## 🚨 SPECIAL CASES
-
-**Intermittent Bugs:** Add logging, monitor patterns, use sequential-thinking MCP
-
-**Performance Bugs:** Profile (DevTools, cProfile), identify bottlenecks, benchmark
-
-**Integration Bugs:** Test independently, check network logs, verify configs
-
-**No Error Message:** Add logging, binary search, use debugger
-
----
-
-## 💡 KEY PRINCIPLES
-
-**Golden Rule:** "The bug is always in the code you're sure is correct."
-
-**Scientific Method:**
-1. Observe (reproduce)
-2. Hypothesize (theories)
-3. Test (verify)
-4. Conclude (root cause)
-5. Verify (fix works)
-
-**Communication:** Always explain to user:
-- What the bug was
-- Why it happened (root cause)
-- How you fixed it
-
----
-
-## 📝 COMPLETION CHECKLIST
-
-Before declaring "bug fixed":
-- [ ] Bug consistently reproducible
-- [ ] Root cause identified (not symptoms)
-- [ ] Research completed
-- [ ] Minimal changes made
-- [ ] Original bug no longer occurs
-- [ ] Tests pass
-- [ ] No new linter errors
-- [ ] Code documented (comments + commit)
-
----
-
-**REMEMBER:** Debugging improves with practice. Stay systematic, verify with evidence, and communicate clearly! 🚀
+## COMPLETION CHECKLIST
+- [ ] Bug consistently reproducible & Root cause identified.
+- [ ] Research completed & Minimal changes made.
+- [ ] Original bug fixed & Tests pass.
+- [ ] No new linter errors & Code documented.

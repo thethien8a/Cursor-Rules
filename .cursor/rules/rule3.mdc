@@ -1,262 +1,59 @@
 ---
-description: Using Tools Rule
+description: Memory Management Rule
 alwaysApply: true
 ---
-# Using Tools Rule
 
-**PURPOSE:** Define clear separation of concerns between code analysis (Serena MCP) and code editing (Cursor built-in tools) for AI assistants.
+# Memory Management Rule
 
----
+**When use this rule**: 
+- When user ask "update memory" or "cập nhật memory"
+- When you think that "that changes in code have much impact on current project"
 
-## 🎯 Core Philosophy: Separation of Concerns
-
-### GOLDEN RULE
-```
-Serena MCP  = UNDERSTAND code (analysis, navigation, exploration)
-Cursor Tools = MODIFY code (editing, refactoring, formatting)
-```
-
-**NEVER cross this boundary.** Serena does NOT edit. Cursor does NOT analyze symbols.
+**OBJECTIVE:** To define the structure and workflow for creating and maintaining the project's knowledge base using Serena's memory tools.
 
 ---
 
-## ⚠️ CRITICAL PRINCIPLE: Intelligent Reading Strategy
+## 1. The Memory Lifecycle (Mandatory Workflow)
 
-### THE MOST IMPORTANT RULE
-**DO NOT READ ENTIRE FILES UNLESS ABSOLUTELY NECESSARY!**
+### Phase 1: Onboarding (First-time analysis)
+1.  **Activate Project:** `mcp_serena_activate_project(...)`
+2.  **Check Onboarding:** `mcp_serena_check_onboarding_performed()`
+3.  **If not onboarded, create core memories:**
+    - Apply the investigation workflow from `rule4.md` to the codebase.
+    - Synthesize findings and use `mcp_serena_write_memory` to create the initial versions of the 6 core documents listed below.
 
-This is not a suggestion—this is a hard requirement. Reading full files:
-- ❌ Wastes context window tokens
-- ❌ Slows down analysis
-- ❌ Makes it harder to find relevant code
-- ❌ Violates Serena's core design philosophy
-
-### The Intelligent Reading Hierarchy (ALWAYS follow this order)
-
-```
-Step 1: OVERVIEW     → get_symbols_overview (table of contents)
-   ↓ (if need more detail)
-Step 2: SYMBOL LOOKUP → find_symbol (specific class/function)
-   ↓ (if need relationships)
-Step 3: REFERENCES   → find_referencing_symbols (who uses this?)
-   ↓ (ONLY if above insufficient)
-Step 4: TARGETED READ → read_file with line ranges (small slices)
-   ↓ (ABSOLUTE LAST RESORT)
-Step 5: FULL FILE    → read_file without ranges (rare!)
-```
-
-### When is Full File Reading Justified?
-ONLY in these scenarios:
-1. **Config files** (JSON, YAML, .env) - they're small and need full context
-2. **Documentation** (README.md, docs) - meant to be read as a whole
-3. **Small files** (<100 lines) - minimal cost
-4. **Already tried Steps 1-4** and still missing critical information
-
-### Examples of WRONG vs RIGHT Approach
-
-❌ **WRONG:** User asks "How does the authentication system work?"
-```
-read_file("src/auth/service.py")  # 800 lines!
-read_file("src/auth/middleware.py")  # 500 lines!
-```
-
-✅ **RIGHT:** 
-```
-1. get_symbols_overview("src/auth/service.py")  # See AuthService, login(), verify_token()
-2. find_symbol("AuthService", "src/auth/service.py", depth=1)  # Get methods list
-3. find_symbol("AuthService/login", include_body=True)  # Read ONLY login method
-4. find_referencing_symbols("AuthService", "src/auth/service.py")  # Who uses it?
-```
-*Result: Read only 50 lines instead of 1300 lines*
+### Phase 2: Daily Operations (Read → Analyze → Update)
+1.  **READ:** Before starting any task, `read_memory` to load context. Start with `project-overview-and-status`.
+2.  **ANALYZE:** Use Serena's symbol-level tools (`find_symbol`, `find_referencing_symbols`) to investigate the code, guided by the memory.
+3.  **UPDATE:** After discovering new information (architectural patterns, key dependencies, "gotchas"), you **must** update the relevant memory document using `write_memory`.
 
 ---
 
-## 🔍 Investigation Workflow (Serena MCP Only)
+## 2. The 4 Core Memory Documents
 
-### Phase 1: Session Initialization
-```python
-# ALWAYS start with these
-mcp_serena_activate_project("project_name")
-mcp_serena_list_memories()  # Load existing knowledge
-mcp_serena_read_memory("project-overview-and-status")  # Context
-```
+*These are the mandatory files that form the project's knowledge base.*
 
-### Phase 2: High-Level Discovery
-**Goal:** Understand structure WITHOUT reading code  
-**Tools:** `list_dir()` for tree, `get_symbols_overview()` for table of contents
+#### 1. `project-overview-and-status`
+- **Key Sections:** Project Purpose, Tech Stack, Current Status, Active Work, Decision Log.
+- **Build With:** `README.md`, project configs, manual synthesis.
 
-### Phase 3: Targeted Symbol Navigation
-**Goal:** Find exact locations  
-**Tools:** `find_symbol(name_path, path, include_body=False/True, depth=0/1)`  
-**Name Paths:** `"Class"`, `"/Class"` (top-level), `"Class/method"`, `"/Class/method"` (absolute)
+#### 2. `codebase-navigation-map`
+- **Key Sections:** Repository Structure, Main Entry Points, Key Module summaries, Navigation Shortcuts.
+- **Build With:** `list_dir`, `get_symbols_overview`.
 
-### Phase 4: Relationship Mapping
-**Goal:** Understand dependencies  
-**Tools:** `find_referencing_symbols(name, path)` - Who calls this?
+#### 3. `technical-architecture-and-patterns`
+- **Key Sections:** High-Level Architecture Diagram/Description, Core Components, Data Flow, Key Implementation Patterns.
+- **Build With:** `find_symbol`, `find_referencing_symbols`, targeted `read_file`.
 
-### Phase 5: Targeted Reading
-**Goal:** Read ONLY necessary code  
-**Tools:** `read_file(path, start_line, end_line)` - Always use line ranges!
-
-### Phase 6: Pattern Search
-**Goal:** Find by pattern when name unknown  
-**Tools:** `search_for_pattern(pattern, path, glob)`
+#### 4. `llm-quick-reference-index`
+- **Key Sections:** Index of Critical Symbols, Key APIs, Common "Gotchas", Important Configuration Variables, Quick Start Commands.
+- **Build With:** Continuous updates from the "UPDATE" step in daily operations.
 
 ---
 
-## ✏️ Editing Workflow (Cursor Built-in Tools Only)
+## 3. Handoff Protocol (for multi-session tasks)
 
-### Pre-Edit Checklist
-- [ ] Have you completed Serena analysis?
-- [ ] Do you understand the impact of your change? (used `find_referencing_symbols`?)
-- [ ] Did you call `think_about_task_adherence` before editing?
-- [ ] Is your plan confirmed with the user?
-
-### Editing Tools (Cursor ONLY)
-1. **Direct editing** - Type in the editor
-2. **Find & Replace** - Bulk text changes
-3. **Multi-cursor** - Edit multiple locations simultaneously
-4. **Refactor menu** - Rename symbol, extract method, etc.
-5. **Code actions** - Quick fixes, organize imports
-
-### Post-Edit Checklist
-- [ ] Run linter: Check Cursor Diagnostics/Problems panel
-- [ ] Run tests: Use terminal with `--non-interactive` flags
-- [ ] Review diff: Use Cursor Diff viewer
-- [ ] Update memory: If architectural change, call `write_memory`
-
----
-
-## 🗺️ Task-to-Tool Decision Matrix
-
-| Task | Use | Tool | Why |
-|------|-----|------|-----|
-| **"Find where X is defined"** | Serena | `find_symbol` | Symbolic search |
-| **"Who calls function Y?"** | Serena | `find_referencing_symbols` | Cross-file analysis |
-| **"List all classes in file"** | Serena | `get_symbols_overview` | Structure overview |
-| **"Read implementation of method Z"** | Serena | `find_symbol` + `include_body=True` | Targeted read |
-| **"Search for TODO comments"** | Cursor | Search/Grep panel | Text search |
-| **"Navigate to definition"** | Cursor | Cmd/Ctrl + Click | Quick navigation |
-| **"Rename variable across project"** | Cursor | Refactor → Rename | AST-based refactor |
-| **"Fix syntax error"** | Cursor | Editor + Diagnostics | Code modification |
-| **"Format code"** | Cursor | Format Document | Style enforcement |
-| **"Add new function"** | Cursor | Editor | Code creation |
-| **"Understand data flow"** | Serena | `find_symbol` + `find_referencing_symbols` | Trace relationships |
-| **"Read config file"** | Serena | `read_file` (full) | Small, needs context |
-
----
-
-## 📚 Tool Reference Quick Guide
-
-### Serena MCP (Analysis Only)
-
-| Tool | When | Key Points |
-|------|------|-----------|
-| `activate_project(name)` | First action | Initialize session |
-| `list_memories()` / `read_memory(name)` | After activation | Load context |
-| `list_dir(path, recursive)` | Need structure | Get file tree |
-| `get_symbols_overview(path)` | First time in file | Table of contents |
-| `find_symbol(name_path, path, include_body, depth)` | Know name | `include_body=False` (fast), `=True` (full code) |
-| `find_referencing_symbols(name, path)` | Check usage | Who calls this? |
-| `read_file(path, start, end)` | Need exact slice | Always use line ranges |
-| `search_for_pattern(pattern, path, glob)` | Pattern search | When name unknown |
-| `think_about_*()` | Meta-thinking | Before conclusions/edits |
-
-**Name Path Patterns:** `"ClassName"`, `"/ClassName"` (top-level), `"ClassName/method"`, `"/ClassName/method"` (absolute)
-
-### Cursor Built-in (Editing & Navigation)
-
-| Tool | When | Use For |
-|------|------|---------|
-| Explorer | Visual nav | Browse, create/delete files |
-| Search/Grep | Exact text | Strings, TODOs, regex |
-| Codebase Search | Semantic | Concepts, features |
-| Editor | Code changes | Write, modify, delete |
-| Find & Replace | Bulk changes | Update patterns |
-| Refactor | Structure | Rename, extract, move |
-| Diagnostics | After edits | Check errors |
-| Diff Viewer | Pre-commit | Review changes |
-| Terminal | Run commands | Tests, builds (use `--non-interactive`) |
-
----
-
-## 🎓 Real-World Scenarios
-
-### Scenario 1: "Fix bug in user registration"
-**❌ WRONG:** Read entire files (1700 lines)  
-**✅ RIGHT:** 
-```python
-get_symbols_overview("src/routes/auth.py")  # Find register_route
-find_symbol("register_route", "src/routes/auth.py", include_body=True)  # ~20 lines
-find_symbol("UserService/create_user", "src/services/user.py", include_body=True)  # ~30 lines
-# Total: ~50 lines, found bug!
-```
-
-### Scenario 2: "Add email verification feature"
-**Analysis (Serena):**
-```python
-search_for_pattern(r"email", "src/", paths_include_glob="*.py")
-find_symbol("EmailService", relative_path="", substring_matching=True)
-find_referencing_symbols("EmailService", "src/services/email.py")
-find_symbol("EmailService/send", "src/services/email.py", include_body=True)
-```
-**Editing (Cursor):** Add verify_email() method, create token model, add route, update flow
-
----
-
-## 🚨 Common Anti-Patterns to AVOID
-
-1. **Reading Files You Already Read** - Don't `read_file` then `find_symbol` on same file
-2. **Using Serena to Edit** - NEVER use `replace_symbol_body`, `insert_after_symbol`. Use Cursor editor!
-3. **Reading Full Files First** - Always `get_symbols_overview` → `find_symbol` → targeted read
-4. **Skipping Relationship Analysis** - Always `find_referencing_symbols` before major changes
-
----
-
-## 📋 Quick Reference Cheat Sheet
-
-### When to Use Which Tool
-
-| Situation | Tool Chain |
-|-----------|------------|
-| **New file, never seen before** | `get_symbols_overview` → `find_symbol` (specific parts) |
-| **Find specific function/class** | `find_symbol` with name |
-| **Understand how X is used** | `find_referencing_symbols` |
-| **Search for pattern** | `search_for_pattern` OR Cursor Search |
-| **Read small config file** | `read_file` (full) |
-| **Read part of large file** | `find_symbol` OR `read_file` with ranges |
-| **Navigate quickly** | Cursor Explorer + Cmd/Ctrl+Click |
-| **Edit code** | Cursor Editor (NEVER Serena) |
-| **Rename across project** | Cursor Refactor → Rename |
-| **Check for errors** | Cursor Diagnostics/Problems |
-| **Run tests** | Cursor Terminal |
-
----
-
-## 💡 Remember These Principles
-
-1. **Analysis ≠ Editing** - Different tools, different purposes
-2. **Overview → Symbol → Detail** - Always follow this hierarchy
-3. **Read less, understand more** - Symbolic tools save tokens
-4. **Verify before editing** - Use `find_referencing_symbols`
-5. **Think before acting** - Use meta-thinking tools
-6. **Communicate clearly** - Surface uncertainties early
-7. **Keep changes minimal** - Fix only what's needed
-
----
-
-## 🎯 Success Metrics
-
-You're doing it right when:
-- ✅ You read <10% of a large file to understand key logic
-- ✅ You use `get_symbols_overview` before `read_file`
-- ✅ You never use Serena editing tools
-- ✅ You check references before refactoring
-- ✅ You can trace code flow without reading entire files
-
-You're doing it wrong when:
-- ❌ You read entire files "just to see what's there"
-- ❌ You read the same content multiple times
-- ❌ You use Serena tools to edit code
-- ❌ You skip relationship analysis
-- ❌ You edit without understanding impact
+- At the end of a session on a long-running task, create a temporary handoff memory.
+- **Name:** `handoff-[feature-name]-[YYYY-MM-DD]`
+- **Content:** Summarize status, next steps, and any blockers.
+- The next LLM session **must** start by reading this handoff memory.
