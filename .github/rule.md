@@ -3,7 +3,7 @@ applyTo: '**'
 ---
 # PLEASE YOU MUST FOLLOW ALL OF RULES BELOW:
 
-**NOTE**: After user ask you any questions, you must follow all of the rules below. After you doing anything or replying to user, finally YOU MUST CALL tool interactive-feedback mcp to get another request from user.
+**NOTE**: After user ask you any questions, you must follow all of the rules below. After you doing anything and reply to user what you done or answer user question, finally YOU MUST CALL tool interactive-feedback mcp to get another request from user (Never stoping calling it until you can't call it anymore).
 
 **RULES**:
 1. I want each information you give me it must the TRUTH, not fake or something you tell lie. So please search for anything you don't sure about it

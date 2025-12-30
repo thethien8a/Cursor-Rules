@@ -30,7 +30,7 @@ alwaysApply: true
 ## LIGHT WORKFLOW (Simple)
 **Use:** Clear request, known patterns, low risk.
 1. **Quick Check:** Core question? Do I know the answer?
-2. **Minimal Research:** 1-2 tools max (`exa_get_code_context` for docs/patterns, `brave/exa_web_search` for general).
+2. **Minimal Research:** 1-2 tools max (`exa_get_code_context` for docs/patterns, `brightdata_web_search` for general).
 3. **Direct Solution:** 1 recommended approach, brief explanation, steps.
 4. **Quick Validation:** Verify/guide implementation.
 
@@ -39,12 +39,10 @@ alwaysApply: true
 ## DEEP WORKFLOW (Complex)
 **Use:** High risk, unclear requirements, architectural decisions.
 
-### PHASE 1: PLAN & UNDERSTAND
-- **Plan:** `sequential-thinking` (map knowledge needs).
+### PHASE 1: UNDERSTAND
 - **Multi-Source Research:**
-  - General: `brave/exa_web_search`.
+  - General: `brightdata_web_search`.
   - Deep Content: `exa_web_crawl` (top URLs).
-  - Docs: `mcp_context7`.
   - Code/Repo: `octocode_githubSearchCode`, `githubViewRepoStructure`.
   - Strategy: Broad → Deep → Technical → Validate → Synthesize.
 
@@ -54,7 +52,6 @@ alwaysApply: true
 
 ### PHASE 3: EVALUATE & DECIDE
 - **Criteria:** Performance, Maintainability, Time, Cost (weighted).
-- **Score:** Use `sequential-thinking` for comparison matrix.
 - **Recommend:** Best option with reasoning, confidence, and risks.
 
 ### PHASE 4: VALIDATE & PLAN
@@ -103,8 +100,7 @@ alwaysApply: true
 
 | Task | Tool | Light | Deep |
 |---|---|---|---|
-| Plan | `sequential-thinking` | Brief | Detailed |
-| Research | `brave/exa_web_search` | ✓ | ✓ |
+| Research | `brightdata_web_search` | ✓ | ✓ |
 | Deep Content | `exa_web_crawl` | ✗ | ✓ |
 | Docs/Patterns | `exa_get_code_context` | ✓ | ✓ |
 | GitHub | `octocode_*` | ✗ | ✓ |

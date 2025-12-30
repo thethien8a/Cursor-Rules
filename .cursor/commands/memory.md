@@ -1,1 +1,0 @@
-Using serena mcp to update my current status of project based on memory rules

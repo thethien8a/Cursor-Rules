@@ -45,7 +45,6 @@ C. **Binary Search:** Comment out code halves to isolate.
 ### PHASE 3: RESEARCH SOLUTIONS
 **Goal:** Find proven solutions using `exa` (web) and `octocode` (github).
 **Checklist:** Stack Overflow, GitHub Issues, Official Docs.
-**If No Solution:** Read docs, analyze source (Octocode), form hypotheses (`sequential-thinking`), test systematically.
 
 ### PHASE 4: IMPLEMENT & TEST FIX
 **Goal:** Apply solution without new bugs.
@@ -73,8 +72,7 @@ C. **Binary Search:** Comment out code halves to isolate.
 |---|---|
 | Find error location | Serena (`get_symbols_overview` → `find_symbol`) |
 | Trace code flow | Serena (`find_referencing_symbols`) |
-| Research solutions | Brave + Exa |
-| Check docs | Context7 |
+| Research solutions | Brightdata + Exa |
 | GitHub examples | Octocode |
 | Run tests | Terminal (`pytest`) |
 | Check errors | Cursor (Diagnostics, `read_lints`) |

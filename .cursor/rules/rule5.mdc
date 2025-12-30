@@ -1,8 +1,0 @@
----
-description: Using Tools Rule
-alwaysApply: true
----
-
-# Using Tools Rule
-
-If you not follow this rule, user will be very sad: Please always using serena-mcp to exploring codebase and investigating files in codebase. I prefer using serena-mcp tools to understand code than reading file. Only reading file whenever you think that serena-mcp tool cannot help you to understand the code or when you really need to read file to do something.
