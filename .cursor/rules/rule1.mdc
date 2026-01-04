@@ -43,7 +43,7 @@ C. **Binary Search:** Comment out code halves to isolate.
 **Tools:** Serena MCP (`find_symbol`, `find_referencing_symbols`), Cursor Debugger.
 
 ### PHASE 3: RESEARCH SOLUTIONS
-**Goal:** Find proven solutions using `exa` (web) and `octocode` (github).
+**Goal:** Find proven solutions using `exa` (web) and `grep github` (github).
 **Checklist:** Stack Overflow, GitHub Issues, Official Docs.
 
 ### PHASE 4: IMPLEMENT & TEST FIX
@@ -73,7 +73,7 @@ C. **Binary Search:** Comment out code halves to isolate.
 | Find error location | Serena (`get_symbols_overview` → `find_symbol`) |
 | Trace code flow | Serena (`find_referencing_symbols`) |
 | Research solutions | Brightdata + Exa |
-| GitHub examples | Octocode |
+| GitHub examples | Grep Github |
 | Run tests | Terminal (`pytest`) |
 | Check errors | Cursor (Diagnostics, `read_lints`) |
 
