@@ -73,7 +73,7 @@ C. **Binary Search:** Comment out code halves to isolate.
 | Find error location | Serena (`get_symbols_overview` → `find_symbol`) |
 | Trace code flow | Serena (`find_referencing_symbols`) |
 | Research solutions | Brightdata + Exa |
-| GitHub examples | Grep Github |
+| GitHub examples | Grep Github + Octocode|
 | Run tests | Terminal (`pytest`) |
 | Check errors | Cursor (Diagnostics, `read_lints`) |
 

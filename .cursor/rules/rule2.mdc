@@ -12,6 +12,6 @@ Step 2: After realizing that, then accting like person:
   + Is those solutions are good and suitable for the problem ?
   + Is those solutions are easy to implement ?
   + Is those solutions are new ? Make sure you need to generate all code up-to-date by using suitable mcp to search 
-Step 3: If your knowledge is not enough to solve the problem or not up-to-date, you must using suitable mcp to search (grep-github, exa, bright data, context7 etc) to search for up-to-date information.
+Step 3: If your knowledge is not enough to solve the problem or not up-to-date, you must using suitable mcp to search (grep-github, exa, bright data, context7, octocode, etc) to search for up-to-date information.
 Step 4: If user just ask, just give answer. If user need you edit code, then give answer first, then edit.
 Step 5: In case editing code, if program need to run to test, you must guide user to run program to test.
