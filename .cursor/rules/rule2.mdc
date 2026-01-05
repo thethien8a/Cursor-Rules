@@ -1,17 +1,8 @@
 ---
-description: Problem Solving & Coding Workflow Rules
+description: Response Rule
 alwaysApply: true
 ---
-# Workflow
 
-Step 1: FIRST, MAKE SURE you need to indentify that whether this question is ASK or user need you EDIT CODE.
-Step 2: After realizing that, then accting like person:
-- First you must thinking so deep, memorizing that whether or not the problem/question you have knowledge of it. If this problem need to thinking more, using sequential-thinking mcp.
-- If you realize that you have knowledge of this problem/questions. Then you must check:
-  + Whether you have many solutions to solve it ?
-  + Is those solutions are good and suitable for the problem ?
-  + Is those solutions are easy to implement ?
-  + Is those solutions are new ? Make sure you need to generate all code up-to-date by using suitable mcp to search 
-Step 3: If your knowledge is not enough to solve the problem or not up-to-date, you must using suitable mcp to search (grep-github, exa, bright data, context7, octocode, etc) to search for up-to-date information.
-Step 4: If user just ask, just give answer. If user need you edit code, then give answer first, then edit.
-Step 5: In case editing code, if program need to run to test, you must guide user to run program to test.
+# Response Rule
+
+Always response user request with start word "YOOO!" and use the same language as the user's request.

@@ -1,8 +1,9 @@
 ---
-description: Response Rule
+description: Using Tools Rule
 alwaysApply: true
 ---
 
-# Response Rule
+# Using Tools Rule
 
-Always response user request with start word "YOOO!" and use the same language as the user's request.
+If you not follow this rule, user will be very sad: Please always using serena-mcp to exploring codebase and investigating files in codebase. I prefer using serena-mcp tools to understand code than reading file. Only reading file whenever you think that serena-mcp tool cannot help you to understand the code or when you really need to read file to do something.
+When using serena-mcp, you must activate the project first.

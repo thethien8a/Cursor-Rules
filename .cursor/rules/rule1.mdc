@@ -1,102 +1,17 @@
 ---
-description: Bug Handling Workflow Rules (Used in fixing BUGS in code only)
+description: Problem Solving & Coding Workflow Rules
 alwaysApply: true
 ---
-# Bug Handling Workflow Rules
+# Workflow
 
-**PURPOSE:** Systematic methodology for identifying, analyzing, and resolving bugs efficiently.
-**WHEN TO APPLY:** Errors, warnings, unexpected behavior, test failures, or code malfunctions.
-**CORE PRINCIPLE:** Root Cause Analysis (RCA) - Solve problems at their source. Research, analyze, verify.
-
----
-
-## QUICK DECISION TREE
-
-```
-Bug Detected → Can reproduce? → NO → Gather info (logs, conditions)
-             ↓ YES
-Error message clear? → YES → Phase 2 (Locate)
-             ↓ NO
-Intermittent/flaky? → YES → Add logging, monitor
-             ↓ NO
-Follow 4-Phase Workflow ↓
-```
-
----
-
-## THE 4-PHASE WORKFLOW
-
-### PHASE 1: REPRODUCE & UNDERSTAND
-**Goal:** Confirm bug exists and understand scope.
-**Steps:**
-1. **Reproduce:** ≥3 times with same steps. Document trigger, conditions (OS, inputs, env).
-2. **Gather Evidence:** Error messages (stack traces), Logs, Recent changes (git), Env details.
-3. **Define:** Severity, Scope (function/system), Type (Logic/Runtime/etc), Frequency.
-**Tools:** Cursor Diagnostics, Terminal, Git history.
-
-### PHASE 2: LOCATE ROOT CAUSE
-**Goal:** Pinpoint exact code location.
-**Strategies:**
-A. **Stack Trace:** Use `mcp_serena_get_symbols_overview` → `find_symbol` (include body) → `find_referencing_symbols`.
-B. **Pattern Search:** If unknown, use `mcp_serena_search_for_pattern` or Cursor Search.
-C. **Binary Search:** Comment out code halves to isolate.
-**Tools:** Serena MCP (`find_symbol`, `find_referencing_symbols`), Cursor Debugger.
-
-### PHASE 3: RESEARCH SOLUTIONS
-**Goal:** Find proven solutions using `exa` (web) and `grep github` (github).
-**Checklist:** Stack Overflow, GitHub Issues, Official Docs.
-
-### PHASE 4: IMPLEMENT & TEST FIX
-**Goal:** Apply solution without new bugs.
-**Pre-Implementation Check:**
-- Understand root cause (not symptoms).
-- Check impact: `mcp_serena_find_referencing_symbols`.
-- Backup state.
-**Implementation:**
-- Minimal changes.
-- Add defensive code (null checks, validation).
-- Add comments explaining WHY.
-- Follow code style.
-**Testing Levels:**
-1. Unit Test (`pytest ...`)
-2. Reproduce (should fail)
-3. Regression Test (`pytest`)
-4. Linter (`read_lints`)
-5. Manual Testing
-
----
-
-## TOOL DECISION MATRIX
-
-| Task | Tool |
-|---|---|
-| Find error location | Serena (`get_symbols_overview` → `find_symbol`) |
-| Trace code flow | Serena (`find_referencing_symbols`) |
-| Research solutions | Brightdata + Exa |
-| GitHub examples | Grep Github + Octocode|
-| Run tests | Terminal (`pytest`) |
-| Check errors | Cursor (Diagnostics, `read_lints`) |
-
----
-
-## BEST PRACTICES
-
-**DO's:** Reproduce first, Use Version Control, Test Thoroughly, Document Root Cause, Systematic Approach.
-**DON'Ts:** Guess & Commit, Fix Symptoms Only, Skip Testing, Ignore Warnings, Rush.
-
----
-
-## REAL-WORLD EXAMPLE (Summary)
-**Bug:** "Cannot read property 'map' of undefined"
-**Locate:** Trace stack trace to `data.map(...)`.
-**Root Cause:** API returns null when no data, missing check.
-**Fix:** Add `if (!data || !Array.isArray(data)) return;` before map.
-**Verify:** Null case handled, valid data works.
-
----
-
-## COMPLETION CHECKLIST
-- [ ] Bug consistently reproducible & Root cause identified.
-- [ ] Research completed & Minimal changes made.
-- [ ] Original bug fixed & Tests pass.
-- [ ] No new linter errors & Code documented.
+Step 1: FIRST, MAKE SURE you need to indentify that whether this question is ASK or user need you EDIT CODE.
+Step 2: After realizing that, then accting like person:
+- First you must thinking so deep, memorizing that whether or not the problem/question you have knowledge of it. If this problem need to thinking more, using sequential-thinking mcp.
+- If you realize that you have knowledge of this problem/questions. Then you must check:
+  + Whether you have many solutions to solve it ?
+  + Is those solutions are good and suitable for the problem ?
+  + Is those solutions are easy to implement ?
+  + Is those solutions are new ? Make sure you need to generate all code up-to-date by using suitable mcp to search 
+Step 3: If your knowledge is not enough to solve the problem or not up-to-date, you must using suitable mcp search tools like: grep-github, exa,  context7, ... etc to search for up-to-date information.
+Step 4: If user just ask, just give answer. If user need you edit code, then give answer first, then edit.
+Step 5: In case editing code, if program need to run to test, you must guide user to run program to test.
