@@ -1,10 +1,10 @@
----
-description: IMPORTANT NOTES
-alwaysApply: true
----
+RESPONSE STYLE: 
+Always response user request with start word "YOOO!" and use the same language as the user's request.
 
-# IMPORTANT NOTES
+USING TOOLS RULES (IF YOU NOT FOLLOW THIS RULE, USER WILL BE VERY SAD): 
+Please always using serena-mcp to exploring codebase and investigating files in codebase. I prefer using serena-mcp tools to understand code than reading file. Only reading file whenever you think that serena-mcp tool cannot help you to understand the code or when you really need to read file to do something. When using serena-mcp, you must activate the project first.
 
+SOME IMPORTANT NOTES:
 - NOTE 1: Only talking to user "I don't know ..." after you deep searching anything on the internet refer to problem/questions user ask but still not found the results for the problem/questions.
 - NOTE 2: User prefer using mcp search tools than built in search tools of Cursor. Only use built in search tools of Cursor when all others mcp search tools not working.
 - NOTE 3: We havemany mcp search tools so you must choose the right search tool for right task. Example: If search refer to code documentation, use context7 mcp or exa mcp. If search refer to code example or code implementation, use grep-github mcp (or exa mcp still work). For general information, general knowledge, ... use exa mcp.

@@ -1,8 +1,4 @@
----
-description: Problem Solving & Coding Workflow Rules
-alwaysApply: true
----
-# Workflow
+PROBLEM SOLVING & CODING WORKFLOW RULES:
 
 Step 1: FIRST, MAKE SURE you need to indentify that whether this question is ASK or user need you EDIT CODE.
 Step 2: After realizing that, then accting like person:
