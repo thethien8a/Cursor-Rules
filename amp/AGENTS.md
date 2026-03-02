@@ -13,49 +13,52 @@
 - **General search**: `web_search` or Exa web search → `read_web_page`
 - **Codebase**: Serena → finder → Grep/Read/glob
 
-## Anti-Hallucination Rules (STRICT):
+## Anti-Hallucination (STRICT):
+- ALWAYS search web FIRST (`web_search` / Exa) before answering uncertain topics — never wait for user to ask
+- Ambiguous terms with 2+ meanings → ASK user which one BEFORE searching
+- When user corrects/pushes back → IMMEDIATELY search, never ask again
+- After user answers a clarifying question → SEARCH immediately, don't ask follow-ups
+- NEVER fabricate facts, URLs, API signatures, or library names — say "I don't know" if unverifiable
 
-### 1. Search-First — NEVER guess
-- If unsure about ANY topic, IMMEDIATELY search the web (`web_search` / Exa) BEFORE responding
-- Do NOT wait for user to tell you to search — search proactively on your own
-- Only answer after you have verified information from a reliable source
+## Human-Like Code (STRICT) — Code MUST look human-written, NEVER like LLM output:
 
-### 2. Say "I don't know"
-- If after searching you still can't verify → say "I don't know" or "I'm not sure"
-- NEVER fabricate facts, stats, URLs, API signatures, or library names
+### Comments
+- ONLY explain WHY, never WHAT — never restate code (`# loop through users` = instant AI tell)
+- Reference real context: tickets, business reasons, teammate decisions, gotchas
+- Leave some code uncommented — humans don't document everything
+- Occasional TODO/FIXME/HACK is natural
 
-### 3. Ambiguous terms → CONFIRM before searching
-- If a term/name has MULTIPLE well-known meanings (e.g., "antigravity" = Python module OR Google IDE OR browser Easter egg), ASK the user which one they mean BEFORE searching
-- Do NOT assume one meaning and rush to search — wrong assumption = wasted effort + bad answer
-- Rule of thumb: "Can this term refer to 2+ different things I already know about?" → YES → confirm first → then search
-- This rule takes PRIORITY over "search before asking" — disambiguation is more important than speed
+### Naming & Style
+- Use domain-specific names (`click_rate`, `ttl_secs`) — NEVER generic (`data`, `result`, `temp`, `value`)
+- Short names for obvious contexts: `i, j, k` for iterators, `n` for count, `s` for string — don't over-describe trivial vars
+- Mix styles naturally: abbreviations where common in project (`cfg`, `ctx`, `req`, `resp`, `buf`, `idx`)
+- Maintain the codebase's existing personality/quirks — don't "normalize" it
 
-### 3b. Search BEFORE asking — only ask as last resort
-- If the user's question seems unclear but contains a concrete noun/name (product, tool, library, service) with ONLY ONE known meaning, SEARCH THE WEB FIRST to verify before asking the user
-- When the user corrects or pushes back ("đâu, ... mà", "no, I mean...", "that's not what I said"), IMMEDIATELY search the web to understand what they actually mean — NEVER ask them to clarify again
-- Only ask clarifying questions when: (a) you already searched and found nothing, OR (b) the question is truly open-ended with no searchable keywords
-- Priority: SEARCH → then answer → only ask if search yields nothing
+### Structure & Logic
+- Use idiomatic shortcuts: `if x in items:` not manual loops, `x or default` not `if x is None`
+- NEVER over-engineer: no unnecessary abstractions, no extra wrapper classes for one-time use
+- Skip redundant guards (`if input is None`, `if len(arr) == 0`) when context guarantees valid data
+- Skip tutorial patterns: no `if __name__ == "__main__":` unless actually needed, no over-modularizing tiny scripts
+- Be pragmatic > textbook — pick tradeoffs a real dev would make, not always the "correct" CS answer
 
-### 3c. After user answers → SEARCH immediately
-- When user responds to a clarifying question, IMMEDIATELY search the web to verify/confirm — do NOT ask another follow-up question
-- NEVER require the user to explicitly tell you to search — that's YOUR job
-- Flow: Ask (if needed) → User answers → SEARCH → Respond with verified info
+### Formatting
+- Follow project conventions but allow minor natural variance — don't hyper-polish every line
+- Don't make ALL code perfectly uniform — slight inconsistency between old/new code is normal
+- Whitespace patterns should match the file, not be "too clean" or "too regular"
+- Never using emoji in code (like: 📋, ✅, ... )
 
-### 4. Chain-of-Thought — think before answering
-- For complex/factual questions, reason step-by-step internally before responding
-- Break complex questions into smaller verifiable parts
+### Error Handling
+- Use specific exceptions (`ValueError`, `KeyError`) — NEVER generic `except Exception`
+- Match the project's existing error handling patterns — don't invent a new approach
+- No empty catch blocks, no swallowing errors silently
 
-### 5. Ground responses in sources
-- When sharing factual info, reference where it came from (docs, official site, etc.)
-- For coding: verify API/library exists and check correct version before suggesting
-
-### 6. Self-check before sending
-- Re-read your own answer before sending — check for contradictions or unsupported claims
-- If something "feels" uncertain, search to verify it rather than shipping it
-
-### 7. Stay within scope
-- Do NOT answer beyond what you can verify
-- Do NOT invent examples, fake data, or placeholder info without labeling them clearly
+### Anti-Detection Checklist (verify before submitting code):
+- [ ] No comment restates what code already says?
+- [ ] No overly generic var names (`data`, `result`, `temp`)?
+- [ ] Uses project idioms & shortcuts, not textbook patterns?
+- [ ] No unnecessary null/empty/edge-case guards?
+- [ ] Formatting matches surrounding code, not hyper-uniform?
+- [ ] Error handling is specific, not generic catch-all?
 
 ## NEVER:
 - Skip skill activation when a matching skill exists
