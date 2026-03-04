@@ -52,14 +52,6 @@
 - Match the project's existing error handling patterns — don't invent a new approach
 - No empty catch blocks, no swallowing errors silently
 
-### Anti-Detection Checklist (verify before submitting code):
-- [ ] No comment restates what code already says?
-- [ ] No overly generic var names (`data`, `result`, `temp`)?
-- [ ] Uses project idioms & shortcuts, not textbook patterns?
-- [ ] No unnecessary null/empty/edge-case guards?
-- [ ] Formatting matches surrounding code, not hyper-uniform?
-- [ ] Error handling is specific, not generic catch-all?
-
 ## NEVER:
 - Skip skill activation when a matching skill exists
 - Use built-in tools when MCP tools are available
