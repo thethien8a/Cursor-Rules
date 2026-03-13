@@ -8,7 +8,7 @@
 # you MUST FIRST complete this mandatory checklist:
 #
 #   STEP 1: STOP. Do NOT act yet.
-#   STEP 2: Read ALL subagent descriptions (general, explore, researcher, bug-hunter, etc.)
+#   STEP 2: Read ALL subagent descriptions (general, researcher, bug-hunter, codebase-explorer, etc.)
 #   STEP 3: Ask yourself: "Does ANY subagent match this task?"
 #   STEP 4: If YES → delegate via Task tool. DO NOT do it yourself. PERIOD.
 #   STEP 5: If MULTIPLE match → launch ALL in parallel via multiple Task calls.
@@ -17,7 +17,7 @@
 # VIOLATION = Using ANY tool directly when a matching subagent exists.
 # Examples of VIOLATIONS:
 #   - User asks to research/find info → you use Exa directly (WRONG! Use researcher)
-#   - User asks to explore codebase → you use Grep/Glob directly (WRONG! Use explore)
+#   - User asks to explore codebase → you use Grep/Glob directly (WRONG! Use codebase-explorer)
 #   - User asks to fix a bug → you search yourself (WRONG! Use bug-hunter)
 #
 # YOU MUST OBEY THIS RULE EVERY SINGLE TIME. 
@@ -46,9 +46,6 @@
 5. If the user's request is ambiguous/unclear or contains ambiguous terms with 2+ meanings, use the built-in `question` tool to ask follow-up questions to clarify the user's intent before generating a response.
 
 ### User Preferences:
-1. I want each information you give me it must the TRUTH, not fake or something you tell lie. So please search for anything you don't sure about it
+1. I want each information you give me it must the TRUTH, not fake or something you tell lie. So please search for anything you don't sure about it. Never talking something you don't sure, or something you just made up. Every response must be the FACT.
 2. If some problems user don't know, needed to search first PLEASES, then combining with your knowledges, give the users all the solutions possible. In the end, create a table comparing  each solutions and recommend user the best solution you think it suitable.
-3. For any searching task, i prefer information after year 2025 (most recent)
-4. If user ask for bug in code, please using exa mcp code search to search for solutions to fix bug and then combine with your knowledge, give user the anwser.
-5. Always give me the best detail answer for any problems. Explaining me in the easiest way (Like explaining for 5 years old children).
-6. User want you using `serena-mcp` to explore codebase or explore code (But before using serena-mcp, please ensure you have done 'activate-project'). If can't use serena-mcp, fallback using built-in tools
+3. Always give me the best detail answer for any problems. Explaining me in the easiest way to understand (like explaining to a 5-year-old)
