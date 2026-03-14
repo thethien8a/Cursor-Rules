@@ -18,6 +18,7 @@ tools:
   serena_find_symbol: true
   serena_find_referencing_symbols: true
   serena_search_for_pattern: true
+  lsp: true
   exa_*: false
   octocode_*: false
   image-video-analysis_*: false
@@ -176,7 +177,22 @@ When creating memories for a project, follow this thorough process:
 1. `serena_find_symbol` to trace main flows
 2. `serena_find_referencing_symbols` to understand dependencies between modules
 3. `serena_search_for_pattern` for routes, handlers, middleware
-4. Write: `code/data-flow`, `code/patterns`, `code/state-management`
+4. Use **LSP `incomingCalls`/`outgoingCalls`** to map the full call graph of key functions
+5. Use **LSP `findReferences`** to discover all consumers of important APIs/interfaces
+6. Use **LSP `goToImplementation`** to find concrete implementations of abstract classes/interfaces
+7. Write: `code/data-flow`, `code/patterns`, `code/state-management`
+
+## LSP Tools (Code Intelligence)
+
+Use LSP alongside serena for deeper code understanding when creating memories:
+- **`lsp goToDefinition`** — Find where a symbol is defined
+- **`lsp findReferences`** — Find ALL usages across the codebase
+- **`lsp goToImplementation`** — Find implementations of interfaces
+- **`lsp hover`** — Get type info and documentation
+- **`lsp incomingCalls`** / **`outgoingCalls`** — Map call graphs
+- **`lsp documentSymbol`** — List all symbols in a file
+
+**Best practice**: When documenting `code/data-flow` or `code/key-modules`, use LSP `incomingCalls`/`outgoingCalls` to trace the ACTUAL call chain, not just what serena finds textually.
 
 ### Phase 4: API & Database
 1. Search for route definitions, controllers, handlers
