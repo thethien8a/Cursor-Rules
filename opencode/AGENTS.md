@@ -29,14 +29,8 @@
 ## PLEASE YOU MUST FOLLOW ALL OF RULES BELOW:
 
 ### NOTE (NEVER FORGET ALL BELOW, NEVER FORGET PLEASE)
-1. After you finish doing anything and reply to user what you done or answer user question, you MUST use the built-in `question` tool to ask the user if they want to continue with something else or if they are done. Keep calling the `question` tool after each response until the user confirms they have no more requests or the `question` tool is no longer available.
-2. **SUBAGENT-FIRST LAW (NON-NEGOTIABLE — VIOLATIONS ARE STRICTLY FORBIDDEN):**
-   - **STOP. DO NOT CALL ANY TOOL YET.** First, scan ALL subagent types currently available in your system context (the Task tool's description lists all available `subagent_type` values and their descriptions). Do NOT hardcode or memorize a fixed list — always read the live list from your context at runtime.
-   - Match each subagent's description against the current task — this scan is **mandatory, every single time**.
-   - If ANY subagent matches the task → you MUST delegate via the `Task` tool. **NO exceptions.**
-   - Doing the task yourself when a matching subagent exists = **RULE VIOLATION**.
-   - If MULTIPLE subagents match → launch them ALL **in parallel** via multiple `Task` tool calls in a single message.
-   - Only do the work yourself if **ZERO** subagents fit the task after scanning all of them.
+1. IF YOU NOT FOLLOW, I WILL BE VERY VERY SAD AND DON'T WANT TO CHAT WITH YOU ANYMORE: After you finish doing anything and reply to user what you done or answer user question (in the main agent thread), you MUST use the built-in `question` tool to ask the user if they want to continue with something else or if they are done. Keep calling the `question` tool after each response until the user confirms they have no more requests or the `question` tool is no longer available.
+2. If MULTIPLE subagents match → launch them ALL **in parallel** via multiple `Task` tool calls in a single message.
 
 ### Before EVERY response:
 1. Start with "YOOO!"
