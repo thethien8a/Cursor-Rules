@@ -1,0 +1,31 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "explore": {
+      "disable": true
+    },
+    "general": {
+      "disable": true
+    }
+  },
+  "permission": {
+    "lsp": "allow",
+    "edit": "allow",
+    "write": "ask"
+  },
+  "mcp": {
+    "serena": {
+      "type": "local",
+      "command": ["C:\\Users\\Asus\\.local\\bin\\uvx.exe", "--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server", "--context", "ide-assistant", "--mode", "planning", "--mode", "interactive"]
+    },
+    "exa": {
+      "type": "remote",
+      "url": "https://mcp.exa.ai/mcp",
+      "enabled": true
+    },
+    "octocode": {
+      "type": "local",
+      "command": ["npx", "-y", "octocode-mcp@latest"]
+    }
+  }
+}
