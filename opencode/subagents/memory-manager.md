@@ -20,7 +20,6 @@ tools:
   serena_search_for_pattern: true
   lsp: true
   exa_*: false
-  octocode_*: false
   image-video-analysis_*: false
   write: false
   edit: false

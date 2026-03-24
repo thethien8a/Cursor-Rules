@@ -5,7 +5,6 @@ temperature: 0.1
 tools:
   exa_web_search_exa: true
   exa_get_code_context_exa: true
-  octocode_*: false
   serena_activate_project: true
   serena_check_onboarding_performed: true
   serena_list_dir: true

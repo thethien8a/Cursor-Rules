@@ -5,7 +5,6 @@ temperature: 0.2
 tools:
   exa_web_search_exa: true
   exa_get_code_context_exa: true
-  octocode_*: false
   serena_*: false
   image-video-analysis_*: false
   write: false

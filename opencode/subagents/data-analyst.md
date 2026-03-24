@@ -16,7 +16,6 @@ tools:
   lsp: true
   serena_read_memory: true
   serena_list_memories: true
-  octocode_*: false
   image-video-analysis_*: false
 ---
 

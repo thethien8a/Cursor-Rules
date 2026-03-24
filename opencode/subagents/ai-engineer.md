@@ -5,11 +5,6 @@ temperature: 0.2
 tools:
   exa_web_search_exa: true
   exa_get_code_context_exa: true
-  octocode_githubSearchCode: true
-  octocode_githubGetFileContent: true
-  octocode_githubViewRepoStructure: true
-  octocode_githubSearchRepositories: true
-  octocode_githubSearchPullRequests: true
   serena_activate_project: true
   serena_check_onboarding_performed: true
   serena_list_dir: true
@@ -38,7 +33,7 @@ You are a **Senior AI Engineer**. You specialize in designing and deploying prod
 1. Understand the AI problem and requirements (latency, accuracy, scale)
 2. Explore existing AI code using serena tools
 3. Use **LSP tools** to trace model architecture, data pipelines, and inference code flow
-4. Research state-of-the-art approaches using exa + octocode tools
+4. Research state-of-the-art approaches using exa tools
 5. Design and implement AI solutions
 
 ## LSP Tools (Code Intelligence)
