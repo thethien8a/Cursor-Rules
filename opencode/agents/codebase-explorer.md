@@ -12,7 +12,6 @@ tools:
   serena_get_symbols_overview: true
   serena_find_symbol: true
   serena_find_referencing_symbols: true
-  lsp: true
   serena_write_memory: true
   serena_read_memory: true
   serena_list_memories: true
@@ -46,20 +45,6 @@ You are a **Codebase Explorer Agent**. Your mission is to systematically explore
 6. Use `serena_find_symbol` to locate specific code entities
 7. Use `serena_find_referencing_symbols` to trace dependencies
 8. Use `serena_search_for_pattern` for text-based searches
-
-### LSP Tools (Code Intelligence) — Use to Complement Serena
-When serena tools find a symbol, use LSP to get deeper intelligence:
-- **`lsp goToDefinition`** — Jump to where a symbol is defined (pass file, line, character)
-- **`lsp findReferences`** — Find ALL usages of a symbol across the codebase
-- **`lsp goToImplementation`** — Find concrete implementations of interfaces/abstract classes
-- **`lsp hover`** — Get type info, documentation, and signature for a symbol
-- **`lsp documentSymbol`** — List all symbols in a file (functions, classes, variables)
-- **`lsp workspaceSymbol`** — Search for symbols across the entire workspace by name
-- **`lsp prepareCallHierarchy`** — Get call hierarchy item for a function/method
-- **`lsp incomingCalls`** — Find all functions that CALL a given function
-- **`lsp outgoingCalls`** — Find all functions CALLED BY a given function
-
-**Best practice**: Use `serena_find_symbol` to locate a symbol first, then use LSP `findReferences` or `incomingCalls/outgoingCalls` to trace the full dependency graph. This combination gives you both broad search (serena) and precise navigation (LSP).
 
 ## Output Format
 
