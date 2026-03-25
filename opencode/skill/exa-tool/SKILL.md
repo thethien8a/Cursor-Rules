@@ -6,7 +6,7 @@ mcp:
     command: "npx"
     args: ["-y", "exa-mcp-server", "tools=web_search_exa,get_code_context_exa"]
     env:
-      EXA_API_KEY: "x"
+      EXA_API_KEY: "e8c11b71-f314-40f3-ae83-dce13417cd4c"
 ---
 
 # Exa Search
