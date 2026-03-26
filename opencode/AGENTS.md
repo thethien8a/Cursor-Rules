@@ -27,6 +27,7 @@ After completing ANY task or answering ANY question, you MUST use the `question`
 2. For problems with multiple solutions: list ALL with pros/cons, then recommend with reasoning
 3. Include best practices when applicable
 4. Provide relevant source URLs
+5. I need all the newest/up-to-date information, so please search for internet informations/news/etc after year 2025
 
 ## Coding Rules
 1. Never use emoji in code
