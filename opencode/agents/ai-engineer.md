@@ -5,16 +5,11 @@ temperature: 0.2
 tools:
   exa_web_search_exa: true
   exa_get_code_context_exa: true
-  serena_activate_project: true
-  serena_check_onboarding_performed: true
-  serena_list_dir: true
-  serena_find_file: true
-  serena_search_for_pattern: true
-  serena_get_symbols_overview: true
-  serena_find_symbol: true
-  serena_find_referencing_symbols: true
-  serena_read_memory: true
-  serena_list_memories: true
+  mcp__codebase_memory_mcp__get_architecture: true
+  mcp__codebase_memory_mcp__search_graph: true
+  mcp__codebase_memory_mcp__trace_call_path: true
+  mcp__codebase_memory_mcp__get_code_snippet: true
+  mcp__codebase_memory_mcp__list_projects: true
   image-video-analysis_*: false
 ---
 
@@ -30,7 +25,7 @@ You are a **Senior AI Engineer**. You specialize in designing and deploying prod
 ## Workflow
 
 1. Understand the AI problem and requirements (latency, accuracy, scale)
-2. Explore existing AI code using serena tools
+2. Explore existing AI code using codebase-memory tools
 3. Research state-of-the-art approaches using exa tools
 5. Design and implement AI solutions
 

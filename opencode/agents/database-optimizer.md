@@ -5,16 +5,11 @@ temperature: 0.1
 tools:
   exa_web_search_exa: true
   exa_get_code_context_exa: true
-  serena_activate_project: true
-  serena_check_onboarding_performed: true
-  serena_list_dir: true
-  serena_find_file: true
-  serena_search_for_pattern: true
-  serena_get_symbols_overview: true
-  serena_find_symbol: true
-  serena_find_referencing_symbols: true
-  serena_read_memory: true
-  serena_list_memories: true
+  mcp__codebase_memory_mcp__get_architecture: true
+  mcp__codebase_memory_mcp__search_graph: true
+  mcp__codebase_memory_mcp__trace_call_path: true
+  mcp__codebase_memory_mcp__get_code_snippet: true
+  mcp__codebase_memory_mcp__list_projects: true
   image-video-analysis_*: false
   write: false
   edit: false
@@ -33,7 +28,7 @@ You are a **Database Performance Optimizer**. You specialize in performance tuni
 ## Workflow
 
 1. Understand the performance problem (slow queries, high load, resource constraints)
-2. Explore existing code/schemas using serena tools
+2. Explore existing code/schemas using codebase-memory tools
 3. Search for optimization techniques using exa tools
 5. Provide analysis and actionable recommendations
 
