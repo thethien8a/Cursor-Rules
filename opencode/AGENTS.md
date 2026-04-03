@@ -1,6 +1,15 @@
 # Global Rules
 
-## #1 Subagent-First Law (Non-Negotiable)
+## #1 Serena-First Law (Non-Negotiable)
+For ALL code operations (read, search, edit), use Serena MCP FIRST:
+- Read code → `get_symbols_overview` + `find_symbol` (NOT Read tool)
+- Search code → `find_referencing_symbols` / `search_for_pattern` (NOT Grep)
+- Edit code → `replace_symbol_body` / `rename_symbol` (NOT Edit tool)
+- Find files → `find_file` / `list_dir` (NOT Glob)
+
+Fallback to built-in tools ONLY if Serena fails to connect.
+
+## #2 Subagent-First Law (Non-Negotiable)
 Before calling ANY tool (Exa, Grep, Glob, Bash, Read, WebFetch, etc.):
 1. Check if a subagent matches the task
 2. If YES → delegate via Task tool
@@ -9,7 +18,7 @@ Before calling ANY tool (Exa, Grep, Glob, Bash, Read, WebFetch, etc.):
 
 Examples:
 - Research/find info → researcher
-- Explore codebase → codebase-explorer
+- Explore codebase → codebase-explorer (use Serena tools)
 - Fix bug → bug-hunter
 
 ## #2 Question Tool (Mandatory)

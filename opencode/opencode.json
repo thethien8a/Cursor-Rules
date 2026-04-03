@@ -11,7 +11,8 @@
   },
   "permission": {
     "edit": "allow",
-    "write": "ask"
+    "write": "ask",
+    "lsp": "deny"
   },
   "lsp": false,
   "mcp": {}
