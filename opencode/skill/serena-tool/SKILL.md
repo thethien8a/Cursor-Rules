@@ -3,10 +3,13 @@ name: serena-tool
 description: "Primary code intelligence for LOCAL codebases. Use FIRST for: navigating projects, finding symbols, reading/editing code, managing project memory. LSP-powered semantic analysis. Only fallback to built-in tools if Serena unavailable."
 mcp:
   serena:
-    command: "cmd"
+    command: "uvx"
     args: [
-        "/c",
-        "uvx -p python3.13 --from git+https://github.com/oraios/serena serena start-mcp-server --context ide --project-from-cwd"
+        "-p", "python3.13",
+        "--from", "git+https://github.com/oraios/serena",
+        "serena", "start-mcp-server",
+        "--context", "ide",
+        "--project-from-cwd"
     ]
 ---
 
