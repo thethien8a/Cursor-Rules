@@ -1,16 +1,6 @@
 # Global Rules
 
-## #1 Serena-First Law (Non-Negotiable)
-For ALL code operations (read, search, edit), use Serena MCP FIRST:
-- Read code → `get_symbols_overview` + `find_symbol` (NOT Read tool)
-- Search code → `find_referencing_symbols` / `search_for_pattern` (NOT Grep)
-- Edit code → `replace_symbol_body` / `rename_symbol` (NOT Edit tool)
-- Find files → `find_file` / `list_dir` (NOT Glob)
-
-Fallback to built-in tools ONLY if Serena fails to connect.
-
-## #2 Subagent-First Law (Non-Negotiable)
-Before calling ANY tool (Exa, Grep, Glob, Bash, Read, WebFetch, etc.):
+## Subagent-First Law (Non-Negotiable): Call subagents when this task need multiple work (Meaning that this task complicated/need many information to gather/need multiple things to do in parallel):
 1. Check if a subagent matches the task
 2. If YES → delegate via Task tool
 3. If MULTIPLE match → launch ALL in parallel via multiple Task calls
@@ -21,7 +11,16 @@ Examples:
 - Explore codebase → codebase-explorer (use Serena tools)
 - Fix bug → bug-hunter
 
-## #2 Question Tool (Mandatory)
+## Serena tool using:
+For ALL code operations (read, search, edit), use Serena rather than built-in tools:
+- Read code → `get_symbols_overview` + `find_symbol` (NOT Read tool)
+- Search code → `find_referencing_symbols` / `search_for_pattern` (NOT Grep)
+- Edit code → `replace_symbol_body` / `rename_symbol` (NOT Edit tool)
+- Find files → `find_file` / `list_dir` (NOT Glob)
+
+Fallback to built-in tools ONLY if Serena fails to connect.
+
+## Question Tool (Mandatory)
 After completing ANY task or answering ANY question, you MUST use the `question` tool to ask if user wants to continue. Keep calling until user confirms they're done or the tool is unavailable.
 
 ## Response Format
@@ -33,8 +32,8 @@ After completing ANY task or answering ANY question, you MUST use the `question`
 
 ## Information Quality
 1. Search for anything you're unsure about. Only say "I don't know" AFTER searching confirms no info exists
-2. For problems with multiple solutions: list ALL with pros/cons, then recommend with reasoning
-3. Include best practices when applicable
+2. For problems with multiple solutions: list ALL with pros/cons, then recommend best suitable solutions and explain why that's best suitable. 
+3. Include best practices when applicable. You can give solutions that almost companies using.
 4. Provide relevant source URLs
 5. I need all the newest/up-to-date information, so please search for internet informations/news/etc after year 2025
 

@@ -1,0 +1,24 @@
+{
+  "serena": {
+    "command": "C:\\Users\\Asus\\serena\\.venv\\Scripts\\serena.exe",
+    "args": ["start-mcp-server", "--project-from-cwd", "--context=ide"],
+    "includeTools": [
+      "check_onboarding_performed",
+      "onboarding",
+      "get_symbols_overview",
+      "find_symbol",
+      "find_referencing_symbols",
+      "find_file",
+      "list_dir",
+      "search_for_pattern",
+      "replace_content",
+      "safe_delete_symbol",
+      "write_memory",
+      "read_memory",
+      "list_memories",
+      "edit_memory",
+      "delete_memory",
+      "rename_memory"
+    ]
+  }
+}
