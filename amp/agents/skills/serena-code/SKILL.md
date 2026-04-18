@@ -16,7 +16,7 @@ Provides LSP-based code operations: symbol navigation, reference finding, patter
 1. `get_symbols_overview` — get high-level view of a file's symbols
 2. `find_symbol` — find symbols by name path pattern (supports depth, body inclusion)
 3. `find_referencing_symbols` — find all references to a symbol
-4. `list_dir` / `find_file` — navigate project structure
+4. For directory listing / file finding → fallback to built-in tools (`Read`, `glob`)
 
 ### Searching Code
 - `search_for_pattern` — regex search across codebase with flexible file filtering
