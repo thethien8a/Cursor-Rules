@@ -1,7 +1,7 @@
 # Global Rules
 
 ## CRITICAL — Skills First (MUST follow)
-BEFORE doing ANY work, ALWAYS load the matching skill FIRST:
+BEFORE doing ANY work, ALWAYS load the matching skill FIRST (Skill must be loaded if valid):
 - ANY code reading/searching/editing task → load `serena-code` skill FIRST, then use ONLY serena MCP tools
 - Web search needed → load `exa-search` skill FIRST
 - Python coding task → load `python-clean-code` skill FIRST, read it, then code
@@ -19,7 +19,8 @@ Startup sequence (NO EXCEPTIONS):
    - Find files → `mcp__serena__find_file` / `mcp__serena__list_dir`
    - Navigate → `mcp__serena__find_symbol` with name_path_pattern
 
-Fallback to built-in tools ONLY if Serena MCP server fails to respond (error/timeout).
+Fallback to built-in tools ONLY if Serena MCP server fails to respond (error/timeout). 
+Not using 'read-file' tool if serena tool is still can use and valid for this task (To optimize tokens)
 
 ## Response Format
 1. Start with "YOOO!"
